@@ -1,0 +1,55 @@
+# Visual Studio / Rider / JetBrains
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# Build results
+bin/
+obj/
+out/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Rider caches
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# User-specific files
+*.userprefs
+*.user
+
+# Backup files
+*~
+*.bak
+*.orig
+
+# JetBrains Rider-specific
+.idea/
+*.sln.iml
+
+# Dotnet tool manifest
+.dotnet/

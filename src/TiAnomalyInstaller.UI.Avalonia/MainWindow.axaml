@@ -1,0 +1,100 @@
+<Window
+    x:Class="TiAnomalyInstaller.UI.Avalonia.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="TiAnomalyInstaller (v.0.1a)"
+    Width="1280"
+    Height="720"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    CanMaximize="False"
+    CanResize="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Grid ColumnDefinitions="*, 0.8*">
+        <Image
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Source="Resources/Assets/background.jpg"
+            Stretch="UniformToFill" />
+
+        <Border Grid.Column="0" Grid.ColumnSpan="2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                    <GradientStop Offset="0.0" Color="#00FFFFFF" />
+                    <GradientStop Offset="0.55" Color="#C0000000" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Grid
+            Grid.Column="1"
+            Margin="8"
+            RowDefinitions="Auto, *, Auto">
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,0,0,4"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource AmazFont}"
+                FontSize="96"
+                Foreground="#DCDCDC"
+                LineSpacing="-24"
+                Text="S.T.A.L.K.E.R.: Anomaly&#10;Epilogue"
+                TextAlignment="Center" />
+
+            <Grid
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Row="1">
+
+                <StackPanel Orientation="Vertical" Spacing="8">
+                    <Button
+                        Width="282"
+                        HorizontalContentAlignment="Center"
+                        Content="Играть"
+                        FontFamily="{StaticResource AmazFont}"
+                        FontSize="32"
+                        Foreground="#DCDCDC" />
+
+                    <Button
+                        Width="282"
+                        HorizontalContentAlignment="Center"
+                        Content="Установить \ Обновить"
+                        FontFamily="{StaticResource AmazFont}"
+                        FontSize="32"
+                        Foreground="#DCDCDC" />
+
+                    <Separator />
+
+                    <Button
+                        Width="282"
+                        HorizontalContentAlignment="Center"
+                        Content="Проверить целостность файлов"
+                        FontFamily="{StaticResource AmazFont}"
+                        FontSize="32"
+                        Foreground="#DCDCDC" />
+
+                    <Separator />
+
+                    <Button
+                        Width="282"
+                        HorizontalContentAlignment="Center"
+                        Content="Выход"
+                        FontFamily="{StaticResource AmazFont}"
+                        FontSize="32"
+                        Foreground="#DCDCDC" />
+                </StackPanel>
+            </Grid>
+
+            <ProgressBar
+                Grid.Row="2"
+                Margin="16,16,16,24"
+                Foreground="#DCDCDC"
+                Value="64" />
+        </Grid>
+    </Grid>
+</Window>
