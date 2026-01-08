@@ -2,6 +2,7 @@
     x:Class="TiAnomalyInstaller.UI.Avalonia.App"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:TiAnomalyInstaller.UI.Avalonia.Converters"
     RequestedThemeVariant="Dark">
 
     <Application.Styles>
@@ -9,7 +10,9 @@
     </Application.Styles>
 
     <Application.Resources>
-        <FontFamily x:Key="AmazFont">avares://TiAnomalyInstaller.UI.Avalonia/Resources/Fonts#AmazS.T.A.L.K.E.R.v.3.0</FontFamily>
-
+        <ResourceDictionary>
+            <FontFamily x:Key="AmazFont">avares://TiAnomalyInstaller.UI.Avalonia/Resources/Fonts#AmazS.T.A.L.K.E.R.v.3.0</FontFamily>
+            <converters:ViewStateTypeToBoolConverter x:Key="ViewStateTypeToBoolConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

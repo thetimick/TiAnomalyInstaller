@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -7,13 +6,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+      <PackageReference Include="DebounceThrottle" Version="3.0.1" />
+      <PackageReference Include="Downloader" Version="4.0.3" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+      <PackageReference Include="Semver" Version="3.0.0" />
+      <PackageReference Include="SharpSevenZip" Version="2.0.35" />
+      <PackageReference Include="Tomlyn" Version="0.19.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TiAnomalyInstaller.AppConstants\TiAnomalyInstaller.AppConstants.csproj" />
     </ItemGroup>
-
 </Project>

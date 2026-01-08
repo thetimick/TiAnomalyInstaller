@@ -7,8 +7,4 @@
 
 namespace TiAnomalyInstaller.Logic.Configuration.Entities;
 
-public record LocalConfigEntity
-{
-    public string Title { get; init; } = string.Empty;
-    public string ConfigUrl { get; init; } = string.Empty;
-}
+public record LocalConfigEntity(string Title, string ConfigUrl);

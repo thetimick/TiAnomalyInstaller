@@ -1,21 +1,31 @@
 ﻿using Newtonsoft.Json;
+using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Configuration.Entities;
 
 namespace TiAnomalyInstaller.Logic.Configuration;
 
 public interface IConfigurationService
 {
-    public LocalConfigEntity GetLocalConfig(string fileName);
-    public Task<RemoteConfigEntity> ObtainRemoteConfigAsync(string url);
+    public (LocalConfigEntity local, RemoteConfigEntity remote)? Cached { get; }
+    public Task PrepareAsync(string fileName);
 }
 
 public class ConfigurationService: IConfigurationService
 {
-    public LocalConfigEntity GetLocalConfig(string fileName)
+    public (LocalConfigEntity local, RemoteConfigEntity remote)? Cached { get; private set; }
+
+    public async Task PrepareAsync(string fileName)
+    {
+        var localConfig = GetLocalConfig(fileName);
+        var remoteConfig = await ObtainRemoteConfigAsync(localConfig.ConfigUrl);
+        Cached = (localConfig, remoteConfig);
+    }
+
+    private static LocalConfigEntity GetLocalConfig(string fileName)
     {
         var rawContent = File.ReadAllText(
             Path.Combine(
-                Environment.CurrentDirectory, 
+                Constants.CurrentDirectory, 
                 fileName
             )
         );
@@ -26,7 +36,7 @@ public class ConfigurationService: IConfigurationService
         throw new NullReferenceException();
     }
     
-    public async Task<RemoteConfigEntity> ObtainRemoteConfigAsync(string url)
+    private static async Task<RemoteConfigEntity> ObtainRemoteConfigAsync(string url)
     {
         var client = new HttpClient();
         var rawContent = await client.GetStringAsync(url);
