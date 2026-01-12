@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="TiAnomalyInstaller.AppConstants/TiAnomalyInstaller.AppConstants.csproj" />
+  <Project Path="TiAnomalyInstaller.Logic.Orchestrators/TiAnomalyInstaller.Logic.Orchestrators.csproj" />
   <Project Path="TiAnomalyInstaller.Logic.Services/TiAnomalyInstaller.Logic.Services.csproj" />
   <Project Path="TiAnomalyInstaller.UI.Avalonia/TiAnomalyInstaller.UI.Avalonia.csproj" />
 </Solution>

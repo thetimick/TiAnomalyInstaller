@@ -19,7 +19,7 @@ public interface IConfigService
     public RemoteConfigEntity? RemoteCached { get; }
     
     public LocalConfigEntity GetLocalConfig();
-    public Task<RemoteConfigEntity> ObtainRemoteConfig();
+    public Task<RemoteConfigEntity> ObtainRemoteConfigAsync();
 
     public void SaveLocalConfig();
 }
@@ -39,20 +39,20 @@ public class ConfigService(
         LocalCached = Toml.ToModel<LocalConfigEntity>(content);
         
         if (logger.IsEnabled(LogLevel.Information))
-            logger.LogInformation("LocalConfig loaded!");
+            logger.LogInformation("{Path} loaded!", Constants.Files.LocalConfigFileName);
         return LocalCached;
     }
     
-    public async Task<RemoteConfigEntity> ObtainRemoteConfig()
+    public async Task<RemoteConfigEntity> ObtainRemoteConfigAsync()
     {
         if (RemoteCached != null)
             return RemoteCached;
         var local = GetLocalConfig();
         var content = await client.GetStringAsync(local.Url);
         RemoteCached = JsonConvert.DeserializeObject<RemoteConfigEntity>(content);
-        
+
         if (logger.IsEnabled(LogLevel.Information))
-            logger.LogInformation("RemoteConfig loaded!");
+            logger.LogInformation("{Url} loaded!", local.Url);
         return RemoteCached ?? throw new NullReferenceException();
     }
 

@@ -12,6 +12,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.5.0" />
         <PackageReference Include="Avalonia" Version="11.3.10" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.10" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.10" />
@@ -21,8 +22,9 @@
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="DialogHost.Avalonia" Version="0.10.3" />
+        <PackageReference Include="DialogHost.Avalonia" Version="0.10.4" />
         <PackageReference Include="Humanizer.Core" Version="3.0.1" />
+        <PackageReference Include="Humanizer.Core.ru" Version="3.0.1" />
         <PackageReference Include="MessageBox.Avalonia" Version="3.3.1.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
         <PackageReference Include="Serilog" Version="4.3.0" />
@@ -31,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TiAnomalyInstaller.Logic.Orchestrators\TiAnomalyInstaller.Logic.Orchestrators.csproj" />
       <ProjectReference Include="..\TiAnomalyInstaller.Logic.Services\TiAnomalyInstaller.Logic.Services.csproj" />
     </ItemGroup>
     

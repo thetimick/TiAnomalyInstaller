@@ -7,6 +7,7 @@
 
 using System.Security.Cryptography;
 using Downloader;
+using Microsoft.Extensions.Logging;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Services.Entities;
 
@@ -14,94 +15,50 @@ namespace TiAnomalyInstaller.Logic.Services;
 
 public interface IHashCheckerService
 {
-    public IProgress<double>? Handler { get; set; }
-    
-    public Task<bool> OnFileAsync(
-        string fileName, 
-        string checksum, 
-        CancellationToken token
-    );
-    
-    public Task<HashCheckerReportEntity> OnFolderAsync(
-        string url, 
-        string folderName,
-        Constants.Files.Hash.ChecksumsType type,
-        CancellationToken token
-    );
-
-    public Task<Dictionary<string, string>> LoadHashFromUrlAsync(
-        string url, 
-        string folderName,
-        Constants.Files.Hash.ChecksumsType type,
-        CancellationToken token
-    );
+    public Task<string?> ComputeFileHashAsync(string fileName, CancellationToken token = default);
+    public Task<string?> ComputeStreamHashAsync(Stream stream, CancellationToken token = default);
+    public Task<bool> OnFileAsync(string fileName, string checksum, CancellationToken token = default);
+    public Task<bool> OnStreamAsync(Stream stream, string checksum, CancellationToken token = default);
 }
 
-public partial class HashCheckerService(ISevenZipService zipService): IHashCheckerService
+public partial class HashCheckerService(ILogger<HashCheckerService> logger): IHashCheckerService
 {
     public IProgress<double>? Handler { get; set; }
 
-    public async Task<bool> OnFileAsync(string fileName, string checksum, CancellationToken token)
+    public Task<string?> ComputeFileHashAsync(string fileName, CancellationToken token)
     {
-        if (await GetFileHashAsync(fileName, token) is { } hash)
-            return string.Equals(hash, checksum, StringComparison.CurrentCultureIgnoreCase);
-        return false;
+        return GetFileHashAsync(fileName, token);
     }
     
-    public async Task<HashCheckerReportEntity> OnFolderAsync(
-        string url, 
-        string folderName,
-        Constants.Files.Hash.ChecksumsType type,
-        CancellationToken token
-    ) {
-        var checksums = await LoadHashFromUrlAsync(url, folderName, type, token);
-        var report = new HashCheckerReportEntity([], [], []);
-        var current = 0;
-        var total = checksums.Count;
-        
-        await Parallel.ForEachAsync(checksums, token, async (pair, _) => {
-            if (await GetFileHashAsync(pair.Key, token) is not { } hash)
-                report.NotFound.Add(pair.Key);
-            else if (string.Equals(hash.Trim(), pair.Value.Trim(), StringComparison.CurrentCultureIgnoreCase))
-                report.Complete.Add(pair.Key);
-            else
-                report.Error.Add(new HashCheckerReportEntity.ErrorEntity(pair.Key, hash, pair.Value));
-            
-            Interlocked.Increment(ref current);
-            Handler?.Report(total is 0 ? 0 : (double)current * 100 / total);
-        });
-        
-        return report;
+    public Task<string?> ComputeStreamHashAsync(Stream stream, CancellationToken token)
+    {
+        return GetStreamHashAsync(stream, token);
     }
 
-    public async Task<Dictionary<string, string>> LoadHashFromUrlAsync(
-        string url, 
-        string folderName,
-        Constants.Files.Hash.ChecksumsType type, 
-        CancellationToken token
-    ) {
-        var archiveFileName = Constants.Files.Hash.GetPath(type, Constants.Files.Hash.FileType.Archive);
-        var textFileName = Constants.Files.Hash.GetPath(type, Constants.Files.Hash.FileType.Text);
+    public async Task<bool> OnFileAsync(string fileName, string checksum, CancellationToken token)
+    {
+        if (await GetFileHashAsync(fileName, token)  is not { } hash)
+        {
+            LogInfo($"Failed to calculate hash for file '{fileName}'.");
+            return false;
+        }
 
-        await new DownloadService().DownloadFileTaskAsync(url, archiveFileName, token);
-        await zipService.ToFolderAsync(archiveFileName, Constants.StorageDownloadFolder, token);
+        if (string.Equals(hash, checksum, StringComparison.OrdinalIgnoreCase)) 
+            return true;
         
-        var dictionary = (await File.ReadAllLinesAsync(textFileName, token))
-            .Where(s => !s.StartsWith('#'))
-            .Select(s =>
-            {
-                var split = s.Split('*');
-                return new KeyValuePair<string, string>(
-                    Path.Combine(folderName, split[1].Trim().Replace('/', '\\')),
-                    split[0].Trim()
-                );
-            })
-            .ToDictionary();
+        LogInfo(
+            $"Checksum mismatch for file '{fileName}'. " +
+            $"Actual: {hash}, Expected: {checksum}."
+        );
+        
+        return false;
+    }
 
-        File.Delete(archiveFileName);
-        File.Delete(textFileName);
-        
-        return dictionary;
+    public async Task<bool> OnStreamAsync(Stream stream, string checksum, CancellationToken token = default)
+    {
+        if (await GetStreamHashAsync(stream, token) is { } hash)
+            return string.Equals(hash, checksum, StringComparison.CurrentCultureIgnoreCase);
+        return false;
     }
 }
 
@@ -113,9 +70,22 @@ public partial class HashCheckerService
     {
         if (!File.Exists(fileName))
             return null;
-        using var md5 = MD5.Create();
         await using var stream = File.OpenRead(fileName);
-        var hash = await md5.ComputeHashAsync(stream, token);
-        return Convert.ToHexString(hash).ToUpper();
+        var bytes = await MD5.HashDataAsync(stream, token);
+        return Convert.ToHexString(bytes).ToUpper();
     }
+
+    private static async Task<string?> GetStreamHashAsync(Stream stream, CancellationToken token)
+    {
+        var bytes = await MD5.HashDataAsync(stream, token);
+        return Convert.ToHexString(bytes).ToUpper();
+    }
+}
+
+// Private Methods
+
+public partial class HashCheckerService
+{
+    [LoggerMessage(LogLevel.Information, "{msg}")]
+    private partial void LogInfo(string msg);
 }

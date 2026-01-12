@@ -17,10 +17,11 @@ namespace TiAnomalyInstaller.Logic.Services.Entities.ConfigService;
 
 public partial record RemoteConfigEntity
 {
-    public string Profile  { get; init; } = string.Empty;
-    public HashEntity Hash { get; init; } = new(string.Empty, string.Empty);
-    public List<ArchiveEntity> Archives { get; init; } = [];
+    public string? CustomBackgroundImageUrl { get; init; }
+    public string Profile { get; init; } = string.Empty;
     public string Version { get; init; } = string.Empty;
+    public SizeEntity Size { get; init; } = new(-1, -1);
+    public List<ArchiveEntity> Archives { get; init; } = [];
     
     // Computed
     
@@ -29,6 +30,15 @@ public partial record RemoteConfigEntity
 }
 
 // Nested
+
+// Size
+
+public partial record RemoteConfigEntity
+{
+    public record SizeEntity(long Size, long SizeForInstall);
+}
+
+// Archive
 
 public partial record RemoteConfigEntity
 {
@@ -40,33 +50,10 @@ public partial record RemoteConfigEntity
             Vanilla,
             Organizer
         }
-
-        public record OperationEntity
-        {
-            [JsonConverter(typeof(StringEnumConverter))]
-            public enum OperationType
-            {
-                DeleteFile,
-                DeleteFolder,
-                ClearFolder
-            }
-            
-            public string Path { get; init; } = string.Empty;
-            public OperationType Type { get; init; } = OperationType.DeleteFile;
-        }
         
         public string Url { get; init; } = string.Empty;
         public string FileName { get; init; } = string.Empty;
         public ArchiveType Type { get; init; } = ArchiveType.Vanilla;
         public string Hash { get; init; } = string.Empty;
-        public List<OperationEntity> Operations { get; init; } = [];
     }
-}
-
-public partial record RemoteConfigEntity
-{
-    public record HashEntity(
-        string ArchiveChecksumsUrl, 
-        string GameChecksumsUrl
-    );
 }

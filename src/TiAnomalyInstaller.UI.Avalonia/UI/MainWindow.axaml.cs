@@ -6,7 +6,7 @@ namespace TiAnomalyInstaller.UI.Avalonia.UI;
 
 public partial class MainWindow : Window
 {
-    private static MainWindowViewModel ViewModel => Program.AppHost.Services
+    private static MainWindowViewModel ViewModel => Program
         .GetRequiredService<MainWindowViewModel>();
     
     public MainWindow()

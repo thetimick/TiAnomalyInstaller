@@ -37,7 +37,7 @@ public class SevenZipService: ISevenZipService
     {
         using var extractor = new SharpSevenZipExtractor(fileName);
         extractor.Extracting += (_, args) => Handler?.Report(args.PercentDone);
-        await Task.Factory.StartNew(() => extractor.ExtractArchive(folderName), token);
+        await Task.Run(() => extractor.ExtractArchive(folderName), token);
         Handler = null;
     }
 }

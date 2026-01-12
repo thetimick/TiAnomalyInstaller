@@ -1,5 +1,5 @@
 ﻿// ⠀
-// ProgressEntity.cs
+// DownloaderProgressEntity.cs
 // TiAnomalyInstaller.Logic.Services
 // 
 // Created by the_timick on 07.01.2026.
@@ -7,7 +7,7 @@
 
 namespace TiAnomalyInstaller.Logic.Services.Entities;
 
-public record ProgressEntity(
+public record DownloaderProgressEntity(
     double ProgressPercentage,
     double AverageBytesPerSecondSpeed,
     long ReceivedBytesSize,

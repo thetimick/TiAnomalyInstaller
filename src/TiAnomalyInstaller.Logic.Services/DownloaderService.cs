@@ -17,7 +17,7 @@ namespace TiAnomalyInstaller.Logic.Services;
 
 public interface IDownloaderService
 {
-    public IProgress<ProgressEntity>? Handler { get; set; }
+    public IProgress<DownloaderProgressEntity>? Handler { get; set; }
     public Task DownloadFileAsync(string rawUrl, string fileName, CancellationToken token = default);
     public Task CancelAsync();
 }
@@ -26,7 +26,7 @@ public class DownloaderService: IDownloaderService
 {
     // Props
     
-    public IProgress<ProgressEntity>? Handler { get; set; }
+    public IProgress<DownloaderProgressEntity>? Handler { get; set; }
     
     // Private Props
 
@@ -87,7 +87,7 @@ public class DownloaderService: IDownloaderService
     {
         _throttle.Throttle(() => {
             Handler?.Report(
-                new ProgressEntity(
+                new DownloaderProgressEntity(
                     e.ProgressPercentage,
                     e.AverageBytesPerSecondSpeed,
                     e.ReceivedBytesSize,
@@ -102,7 +102,7 @@ public class DownloaderService: IDownloaderService
     {
         _throttle.Throttle(() => {
             Handler?.Report(
-                new ProgressEntity(0, 0, 0, 0, (true, e.Error))
+                new DownloaderProgressEntity(0, 0, 0, 0, (true, e.Error))
             );
         });
     }

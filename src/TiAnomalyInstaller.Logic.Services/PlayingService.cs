@@ -18,14 +18,14 @@ public interface IPlayingService
 
 public class PlayingService: IPlayingService
 {
-    public bool IsPlayingAvailable => File.Exists(Constants.MO2.PlayingFileName);
+    public bool IsPlayingAvailable => File.Exists(Constants.Files.MO2.PlayingFileName);
 
     public async Task PlayAsync(CancellationToken token = default)
     {
         if (!IsPlayingAvailable)
             return;
         await Process
-            .Start(Constants.MO2.PlayingFileName)
+            .Start(Constants.Files.MO2.PlayingFileName)
             .WaitForExitAsync(token);
     }
 }
