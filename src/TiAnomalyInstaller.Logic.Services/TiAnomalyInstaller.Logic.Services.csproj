@@ -7,9 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Ardalis.SmartEnum" Version="8.2.0" />
       <PackageReference Include="DebounceThrottle" Version="3.0.1" />
       <PackageReference Include="Downloader" Version="4.0.3" />
-      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
+      <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
       <PackageReference Include="Semver" Version="3.0.0" />
       <PackageReference Include="SharpSevenZip" Version="2.0.35" />

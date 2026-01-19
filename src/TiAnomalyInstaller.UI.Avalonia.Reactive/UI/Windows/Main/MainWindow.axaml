@@ -1,0 +1,162 @@
+<avalonia:ReactiveWindow
+    x:Class="TiAnomalyInstaller.UI.Avalonia.Reactive.UI.Windows.Main.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avalonia="http://reactiveui.net"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:loc="clr-namespace:TiAnomalyInstaller.AppConstants.Localization;assembly=TiAnomalyInstaller.AppConstants"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:TiAnomalyInstaller.UI.Avalonia.Reactive.UI.Windows.Main"
+    Title="TiAnomalyInstaller (v.0.1a)"
+    Width="1280"
+    Height="720"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    x:TypeArguments="vm:MainWindowViewModel"
+    CanMaximize="False"
+    CanResize="False"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaToDecorationsHint="True"
+    PointerPressed="OnPointerPressed"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.Styles>
+        <Style Selector="Button.Main">
+            <Setter Property="Width" Value="282" />
+            <Setter Property="Height" Value="52" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="FontFamily" Value="{StaticResource AmazFont}" />
+            <Setter Property="FontSize" Value="32" />
+            <Setter Property="Foreground" Value="#DCDCDC" />
+        </Style>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*, 0.8*">
+        <Image
+            x:Name="BackgroundImage"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            Stretch="UniformToFill" />
+
+        <Border Grid.Column="0" Grid.ColumnSpan="2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0%,50%" EndPoint="100%,50%">
+                    <GradientStop Offset="0.0" Color="#00FFFFFF" />
+                    <GradientStop Offset="0.55" Color="#C0000000" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Grid
+            Grid.Column="1"
+            Margin="8"
+            RowDefinitions="Auto, *, Auto">
+
+            <TextBlock
+                Grid.Row="0"
+                Margin="0,4,0,4"
+                VerticalAlignment="Center"
+                FontFamily="{StaticResource AmazFont}"
+                FontSize="96"
+                Foreground="#DCDCDC"
+                LineSpacing="-24"
+                TextAlignment="Center">
+
+                <Run Text="S.T.A.L.K.E.R.: Anomaly" />
+                <LineBreak />
+                <Run x:Name="TitleTextBlock" />
+            </TextBlock>
+
+            <Grid
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Row="1">
+
+                <StackPanel Orientation="Vertical" Spacing="8">
+                    <Button x:Name="PlayButton" Classes="Main">
+                        <Grid>
+                            <TextBlock
+                                x:Name="PlayButtonTitle"
+                                IsVisible="True"
+                                Text="{x:Static loc:Strings.mw_button_play}" />
+
+                            <controls:ProgressRing
+                                x:Name="PlayButtonProgressBar"
+                                Width="32"
+                                Height="32"
+                                Foreground="#DCDCDC" />
+                        </Grid>
+                    </Button>
+
+                    <Button x:Name="InstallButton" Classes="Main">
+                        <Grid>
+                            <TextBlock
+                                x:Name="InstallButtonText"
+                                IsVisible="True"
+                                Text="{x:Static loc:Strings.mw_button_install}" />
+
+                            <controls:ProgressRing
+                                x:Name="InstallButtonProgressBar"
+                                Width="32"
+                                Height="32"
+                                Foreground="#DCDCDC"
+                                IsIndeterminate="True" />
+                        </Grid>
+                    </Button>
+
+                    <Button
+                        x:Name="ExitButton"
+                        Classes="Main"
+                        Content="{x:Static loc:Strings.mw_button_exit}" />
+                </StackPanel>
+            </Grid>
+
+            <StackPanel
+                x:Name="StaticProgressBarStack"
+                Grid.Row="2"
+                Margin="16,16,16,24"
+                IsVisible="True"
+                Spacing="8">
+
+                <TextBlock
+                    x:Name="StaticProgressBarText"
+                    FontFamily="{StaticResource JetBrainsFont}"
+                    FontSize="11" />
+
+                <ProgressBar Foreground="#DCDCDC" Value="100" />
+            </StackPanel>
+
+            <ItemsControl
+                x:Name="DynamicProgressBarList"
+                Grid.Row="2"
+                Margin="16,16,16,24"
+                IsVisible="False">
+
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" Spacing="8" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:MainWindowViewModel+ProgressBarEntity">
+                        <StackPanel Spacing="8">
+                            <TextBlock
+                                FontFamily="{StaticResource JetBrainsFont}"
+                                FontSize="11"
+                                Text="{Binding Title}" />
+
+                            <ProgressBar
+                                Foreground="#DCDCDC"
+                                IsIndeterminate="{Binding IsIndeterminate}"
+                                ShowProgressText="True"
+                                Value="{Binding Value}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</avalonia:ReactiveWindow>

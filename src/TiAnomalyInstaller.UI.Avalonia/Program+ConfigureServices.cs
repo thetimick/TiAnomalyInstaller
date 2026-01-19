@@ -12,7 +12,10 @@ using Serilog;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Orchestrators;
 using TiAnomalyInstaller.Logic.Services;
-using TiAnomalyInstaller.UI.Avalonia.UI;
+using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Settings;
+using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Startup;
+using MainWindowViewModel = TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main.MainWindowViewModel;
 
 namespace TiAnomalyInstaller.UI.Avalonia;
 
@@ -41,7 +44,7 @@ public static partial class Program
         collection.AddSingleton<IConfigService, ConfigService>();
         collection.AddSingleton<IHashCheckerService, HashCheckerService>();
         collection.AddSingleton<IInMemoryStorageService, InMemoryStorageService>();
-        collection.AddSingleton<IMoveService, MoveService>();
+        collection.AddSingleton<ITransferService, TransferService>();
         collection.AddSingleton<IOrganizerService, OrganizerService>();
         collection.AddSingleton<IPlayingService, PlayingService>();
         collection.AddSingleton<IWatcherService, WatcherService>();
@@ -53,5 +56,11 @@ public static partial class Program
         
         collection.AddSingleton<MainWindow>();
         collection.AddSingleton<MainWindowViewModel>();
+        
+        collection.AddSingleton<SettingsWindow>();
+        collection.AddSingleton<SettingsWindowViewModel>();
+
+        collection.AddSingleton<StartupWindow>();
+        collection.AddSingleton<StartupWindowViewModel>();
     }
 }

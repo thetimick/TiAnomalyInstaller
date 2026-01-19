@@ -1,0 +1,50 @@
+﻿<Window
+    x:Class="TiAnomalyInstaller.UI.Avalonia.UI.Windows.Startup.StartupWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="TiAnomalyInstaller (v.0.1a)"
+    Width="512"
+    Height="128"
+    d:DesignHeight="128"
+    d:DesignWidth="512"
+    CanMaximize="False"
+    CanResize="False"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaToDecorationsHint="True"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Grid ColumnDefinitions="Auto, *">
+        <Image
+            Grid.Column="0"
+            Margin="16"
+            Source="../../../Resources/Assets/icon.ico" />
+
+        <StackPanel
+            Grid.Column="1"
+            Margin="0,16,16,16"
+            VerticalAlignment="Center"
+            Spacing="8">
+
+            <TextBox Text="URL" />
+
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
+
+                <Button
+                    Width="96"
+                    HorizontalContentAlignment="Center"
+                    Content="Далее" />
+
+                <Button
+                    Width="96"
+                    HorizontalContentAlignment="Center"
+                    Content="Отмена" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

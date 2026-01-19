@@ -12,14 +12,19 @@ using TiAnomalyInstaller.Logic.Services;
 
 namespace TiAnomalyInstaller.Logic.Orchestrators;
 
-public interface IPlayOrchestrator : IOrchestrator<PlayEventArgs>;
+public interface IPlayOrchestrator : IOrchestrator<PlayEventArgs>
+{
+    public bool IsPlayingAvailable { get; }
+}
 
 public partial class PlayOrchestrator(
     IPlayingService playingService, 
     ILogger<PlayOrchestrator> logger
-): IPlayOrchestrator {
-    
-    public EventHandler<PlayEventArgs>? Handler { get; set; }
+): IPlayOrchestrator
+{
+
+    public event EventHandler<PlayEventArgs>? Handler;
+    public bool IsPlayingAvailable => playingService.IsPlayingAvailable;
 
     public async Task StartAsync(CancellationToken token = default)
     {

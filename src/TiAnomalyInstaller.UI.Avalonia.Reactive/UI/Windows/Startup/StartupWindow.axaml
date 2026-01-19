@@ -1,0 +1,97 @@
+﻿<avalonia:ReactiveWindow
+    x:Class="TiAnomalyInstaller.UI.Avalonia.Reactive.UI.Windows.Startup.StartupWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:avalonia="http://reactiveui.net"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia.ProgressRing"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wStartup="clr-namespace:TiAnomalyInstaller.UI.Avalonia.Reactive.UI.Windows.Startup"
+    Title="TiAnomalyInstaller (v.0.1a) - Профиль"
+    Width="350"
+    Height="500"
+    d:DesignHeight="500"
+    d:DesignWidth="350"
+    x:TypeArguments="wStartup:StartupWindowViewModel"
+    CanMaximize="False"
+    CanResize="False"
+    ExtendClientAreaChromeHints="NoChrome"
+    ExtendClientAreaToDecorationsHint="True"
+    PointerPressed="OnPointerPressed"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Image Source="../../../Resources/Assets/background_550.jpg" Stretch="UniformToFill" />
+
+        <Grid
+            Background="#C0000000"
+            RowDefinitions="Auto, Auto, *, Auto, Auto"
+            RowSpacing="6">
+
+            <TextBlock
+                x:Name="ProfileText"
+                Grid.Row="0"
+                Margin="0,8,0,0"
+                HorizontalAlignment="Center"
+                FontFamily="{StaticResource AmazFont}"
+                FontSize="64"
+                Foreground="#DCDCDC"
+                Text="Новый Профиль" />
+
+            <Separator
+                Grid.Row="1"
+                Height="1"
+                Foreground="#DCDCDC" />
+
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="16">
+
+                <controls:ProgressRing
+                    Width="64"
+                    Height="64"
+                    IsIndeterminate="True" />
+
+                <TextBlock
+                    x:Name="ProgressText"
+                    FontFamily="{StaticResource JetBrainsFont}"
+                    Foreground="#DCDCDC"
+                    Text="Пожалуйста, подождите..." />
+            </StackPanel>
+
+            <Separator
+                x:Name="ProfileSeparator"
+                Grid.Row="3"
+                Height="1"
+                Foreground="#DCDCDC" />
+
+            <StackPanel
+                x:Name="ProfileStackPanel"
+                Grid.Row="4"
+                Margin="16"
+                Spacing="8">
+
+                <TextBox x:Name="ProfileUrlTextBox" Watermark="Укажите URL профиля" />
+
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal"
+                    Spacing="8">
+
+                    <Button
+                        x:Name="SaveButton"
+                        Width="128"
+                        Content="Сохранить" />
+
+                    <Button
+                        x:Name="ExitButton"
+                        Width="96"
+                        Content="Выход" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</avalonia:ReactiveWindow>

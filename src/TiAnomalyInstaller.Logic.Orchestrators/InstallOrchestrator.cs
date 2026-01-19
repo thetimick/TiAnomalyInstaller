@@ -22,19 +22,22 @@ namespace TiAnomalyInstaller.Logic.Orchestrators;
 public interface IInstallOrchestrator : IOrchestrator<InstallEventArgs>;
 
 public partial class InstallOrchestrator(
-    IConfigService configService,
+    IStorageService storageService,
+    IConfigServiceV2 configService,
     IHashCheckerService hashCheckerService,
     IOrganizerService organizerService,
-    IMoveService moveService,
+    ITransferService transferService,
     ILogger<InstallOrchestrator> logger,
     IServiceProvider provider
-): IInstallOrchestrator {
-    public EventHandler<InstallEventArgs>? Handler { get; set; }
+): IInstallOrchestrator
+{
+    public event EventHandler<InstallEventArgs>? Handler;
     
     public async Task StartAsync(CancellationToken token = default)
     {
         // Загружаем конфиг
-        var config = await configService.ObtainRemoteConfigAsync();
+        var url = storageService.GetString(StorageServiceKey.ProfileUrl) ?? "";
+        var config = await configService.ObtainRemoteConfigAsync(url, false);
 
         // Первоначальные проверки
         Initial(config);
@@ -71,7 +74,7 @@ public partial class InstallOrchestrator(
         await organizerService.ConfigureAsync(config.Profile, token);
         
         // Правим версию в локальном конфиге
-        configService.LocalCached?.Version = config.Version;
+        storageService.Set(StorageServiceKey.Version, config.Version);
     }
 }
 
@@ -169,7 +172,7 @@ public partial class InstallOrchestrator
                 _ => string.Empty
             };
 
-            await moveService.MoveDirectory(sourceDirectory, destDirectory, token);
+            await transferService.MoveDirectory(sourceDirectory, destDirectory, token);
         }
     }
 }

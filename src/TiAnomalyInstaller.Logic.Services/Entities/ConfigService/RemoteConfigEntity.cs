@@ -17,9 +17,10 @@ namespace TiAnomalyInstaller.Logic.Services.Entities.ConfigService;
 
 public partial record RemoteConfigEntity
 {
-    public string? CustomBackgroundImageUrl { get; init; }
+    public string Title { get; init; } = string.Empty;
     public string Profile { get; init; } = string.Empty;
     public string Version { get; init; } = string.Empty;
+    public string? CustomBackgroundImageUrl { get; init; }
     public SizeEntity Size { get; init; } = new(-1, -1);
     public List<ArchiveEntity> Archives { get; init; } = [];
     

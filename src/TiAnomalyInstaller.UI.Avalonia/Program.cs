@@ -9,7 +9,6 @@ using Avalonia;
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
-using JetBrains.Annotations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

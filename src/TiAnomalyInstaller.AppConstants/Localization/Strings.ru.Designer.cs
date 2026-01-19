@@ -60,6 +60,24 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Произошла ошибка!\n{0}.
+        /// </summary>
+        internal static string alert_error_text {
+            get {
+                return ResourceManager.GetString("alert_error_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ошибка.
+        /// </summary>
+        internal static string alert_error_title {
+            get {
+                return ResourceManager.GetString("alert_error_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Вы отменили операцию.
         /// </summary>
         internal static string mw_alert_operation_cancelled {
@@ -105,6 +123,15 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Настройки.
+        /// </summary>
+        internal static string mw_button_settings {
+            get {
+                return ResourceManager.GetString("mw_button_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Обновить.
         /// </summary>
         internal static string mw_button_update {
@@ -132,6 +159,15 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Финализация....
+        /// </summary>
+        internal static string mw_progress_title_finalization {
+            get {
+                return ResourceManager.GetString("mw_progress_title_finalization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Проверка {0}.
         /// </summary>
         internal static string mw_progress_title_hash {
@@ -141,7 +177,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ожидание установки.
+        ///   Looks up a localized string similar to Для установки доступна версия {0}.
         /// </summary>
         internal static string mw_progress_title_install_available {
             get {
@@ -173,6 +209,33 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         internal static string mw_progress_title_update_available {
             get {
                 return ResourceManager.GetString("mw_progress_title_update_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выход.
+        /// </summary>
+        internal static string sw_button_exit {
+            get {
+                return ResourceManager.GetString("sw_button_exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        internal static string sw_button_save {
+            get {
+                return ResourceManager.GetString("sw_button_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to НОВЫЙ ПРОФИЛЬ.
+        /// </summary>
+        internal static string sw_profile_new {
+            get {
+                return ResourceManager.GetString("sw_profile_new", resourceCulture);
             }
         }
     }

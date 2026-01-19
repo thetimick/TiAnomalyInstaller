@@ -1,0 +1,23 @@
+<Application
+    x:Class="TiAnomalyInstaller.UI.Avalonia.Reactive.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
+    RequestedThemeVariant="Dark">
+
+    <Application.Styles>
+        <styling:FluentAvaloniaTheme
+            CustomAccentColor="#DCDCDC"
+            PreferSystemTheme="False"
+            PreferUserAccentColor="True" />
+
+        <StyleInclude Source="avares://FluentAvalonia.ProgressRing/Styling/Controls/ProgressRing.axaml" />
+    </Application.Styles>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <FontFamily x:Key="AmazFont">avares://TiAnomalyInstaller.UI.Avalonia.Reactive/Resources/Fonts#AmazS.T.A.L.K.E.R.v.3.0</FontFamily>
+            <FontFamily x:Key="JetBrainsFont">avares://TiAnomalyInstaller.UI.Avalonia.Reactive/Resources/Fonts#JetBrains Mono</FontFamily>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -139,7 +139,7 @@
     <value>Доступно обновление! {0} =&gt; {1}</value>
   </data>
   <data name="mw_progress_title_install_available" xml:space="preserve">
-    <value>Ожидание установки</value>
+    <value>Для установки доступна версия {0}</value>
   </data>
   <data name="mw_common_wait" xml:space="preserve">
     <value>Пожалуйста, подождите...</value>
@@ -155,5 +155,26 @@
   </data>
   <data name="mw_progress_title_download" xml:space="preserve">
     <value>Загрузка {0} ({1} % \ {2} из {3}, {4}/s \ {5})</value>
+  </data>
+  <data name="mw_progress_title_finalization" xml:space="preserve">
+    <value>Финализация...</value>
+  </data>
+  <data name="mw_button_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="alert_error_title" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="alert_error_text" xml:space="preserve">
+    <value>Произошла ошибка!\n{0}</value>
+  </data>
+  <data name="sw_profile_new" xml:space="preserve">
+    <value>НОВЫЙ ПРОФИЛЬ</value>
+  </data>
+  <data name="sw_button_save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="sw_button_exit" xml:space="preserve">
+    <value>Выход</value>
   </data>
 </root>
