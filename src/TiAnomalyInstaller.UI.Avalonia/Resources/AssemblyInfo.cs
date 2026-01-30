@@ -11,4 +11,4 @@ using System.Reflection;
 [assembly: AssemblyTitle("Installer for Anomaly")]
 [assembly: AssemblyCompany("the_timick")]
 [assembly: AssemblyCopyright("the_timick")]
-[assembly: AssemblyFileVersion("0.1")]
+[assembly: AssemblyFileVersion("0.1.1")]

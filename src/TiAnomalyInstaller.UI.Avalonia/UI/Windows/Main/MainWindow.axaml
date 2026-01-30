@@ -9,7 +9,7 @@
     xmlns:markup="clr-namespace:FluentIcons.Avalonia.Markup;assembly=FluentIcons.Avalonia"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main"
-    Title="TiAnomalyInstaller (v.0.1a)"
+    Title="TiAnomalyInstaller (v.0.1.1)"
     Width="1280"
     Height="720"
     d:DesignHeight="720"
