@@ -1,14 +1,9 @@
 <Solution>
-  <Folder Name="/Logic/">
-    <Project Path="TiAnomalyInstaller.Logic.Orchestrators/TiAnomalyInstaller.Logic.Orchestrators.csproj" />
-    <Project Path="TiAnomalyInstaller.Logic.Services.Tests/TiAnomalyInstaller.Logic.Services.Tests.csproj" Id="4a97e892-33ff-435c-b1b5-dd3903d8856c" />
-    <Project Path="TiAnomalyInstaller.Logic.Services/TiAnomalyInstaller.Logic.Services.csproj" />
+  <Folder Name="/ThirdParty/">
+    <Project Path="LiquidGlassAvaloniaUI/LiquidGlassAvaloniaUI.csproj" />
   </Folder>
-  <Folder Name="/Shared/">
-    <Project Path="TiAnomalyInstaller.AppConstants/TiAnomalyInstaller.AppConstants.csproj" />
-  </Folder>
-  <Folder Name="/UI/">
-    <Project Path="TiAnomalyInstaller.UI.Avalonia.Reactive/TiAnomalyInstaller.UI.Avalonia.Reactive.csproj" />
-    <Project Path="TiAnomalyInstaller.UI.Avalonia/TiAnomalyInstaller.UI.Avalonia.csproj" />
-  </Folder>
+  <Project Path="TiAnomalyInstaller.AppConstants/TiAnomalyInstaller.AppConstants.csproj" />
+  <Project Path="TiAnomalyInstaller.Logic.Orchestrators/TiAnomalyInstaller.Logic.Orchestrators.csproj" />
+  <Project Path="TiAnomalyInstaller.Logic.Services/TiAnomalyInstaller.Logic.Services.csproj" />
+  <Project Path="TiAnomalyInstaller.UI.Avalonia/TiAnomalyInstaller.UI.Avalonia.csproj" />
 </Solution>

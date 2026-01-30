@@ -3,17 +3,17 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="clr-namespace:TiAnomalyInstaller.UI.Avalonia.Converters"
-    xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:fui="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
     RequestedThemeVariant="Dark">
 
     <Application.Styles>
-        <FluentTheme />
-        <icons:MaterialIconStyles />
+        <fui:FluentAvaloniaTheme CustomAccentColor="#DCDCDC" />
     </Application.Styles>
 
     <Application.Resources>
         <ResourceDictionary>
             <FontFamily x:Key="AmazFont">avares://TiAnomalyInstaller.UI.Avalonia/Resources/Fonts#AmazS.T.A.L.K.E.R.v.3.0</FontFamily>
+            <FontFamily x:Key="MontserratFont">avares://TiAnomalyInstaller.UI.Avalonia/Resources/Fonts#Montserrat</FontFamily>
 
             <converters:ViewStateTypeToBoolConverter x:Key="ViewStateTypeToBoolConverter" />
             <converters:StringToBoolConverter x:Key="StringToBoolConverter" />

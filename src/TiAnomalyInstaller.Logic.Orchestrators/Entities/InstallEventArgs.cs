@@ -9,6 +9,17 @@ namespace TiAnomalyInstaller.Logic.Orchestrators.Entities;
 
 public class InstallEventArgs : EventArgs
 {
+    public enum InstallType
+    {
+        Hash,
+        Download,
+        Unpack,
+        Merge,
+        Complete
+    }
+
+    public InstallType Type { get; init; } = InstallType.Hash;
+    
     public string Identifier { get; init; } = string.Empty;
     public bool IsCompleted { get; init; }
     

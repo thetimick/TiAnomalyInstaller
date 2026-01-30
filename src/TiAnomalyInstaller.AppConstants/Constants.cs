@@ -19,7 +19,7 @@ public static class Constants
             public static readonly string ConfigFileName = Path.Combine(OrganizerFolderName, "ModOrganizer.ini");
         }
         
-        public static readonly string CustomBackgroundImageFileName = Path.Combine(StorageFolder, "background.image");
+        public static readonly string BackgroundFileName = Path.Combine(StorageFolder, "background.image");
         public static readonly string LocalConfigFileName = Path.Combine(CurrentDirectory, Storage, "config.toml");
         public static readonly string LogFileName = Path.Combine(CurrentDirectory, Storage, "log.txt");
     }

@@ -8,12 +8,13 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TiAnomalyInstaller.AppConstants;
-using TiAnomalyInstaller.Logic.Services.Entities.ConfigService;
+using TiAnomalyInstaller.Logic.Services.Entities;
 
 namespace TiAnomalyInstaller.Logic.Services;
 
 public class HostedService(
-    IConfigService configService, 
+    IStorageService storageService,
+    IConfigService configService,
     IHashCheckerService hashCheckerService,
     IInMemoryStorageService inMemoryStorageService,
     HttpClient client,
@@ -23,9 +24,8 @@ public class HostedService(
     {
         try
         {
-            configService.GetLocalConfig();
-            var remote = await configService.ObtainRemoteConfigAsync();
-            
+            var url = storageService.GetString(StorageServiceKey.ProfileUrl) ?? string.Empty;
+            var remote = await configService.ObtainRemoteConfigAsync(url, false);
             await PreloadCustomBackgroundImageIfNeededAsync(remote);
         }
         catch (Exception ex)
@@ -38,7 +38,7 @@ public class HostedService(
     
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        configService.SaveLocalConfig();
+        storageService.Save();
         return Task.CompletedTask;
     }
     
@@ -48,10 +48,10 @@ public class HostedService(
     {
         try
         {
-            var fileName = Constants.Files.CustomBackgroundImageFileName;
+            var fileName = Constants.Files.BackgroundFileName;
             
             // Если нет URL - используем зашитую картинку
-            if (config.CustomBackgroundImageUrl is not { } url)
+            if (config.Visual.BackgroundImage is not { } url)
             {
                 if (File.Exists(fileName))
                     File.Delete(fileName);

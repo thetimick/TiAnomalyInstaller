@@ -6,10 +6,10 @@
 // ⠀
 
 using System.ComponentModel;
+using System.Text.Json;
 using DebounceThrottle;
 using Downloader;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Services.Entities;
 
@@ -77,7 +77,10 @@ public class DownloaderService: IDownloaderService
             var url = Constants.Utils.YandexDiskResourcesApi
                 .Replace("<key>", Uri.EscapeDataString(rawUrl));
             var json = await _httpClient.GetStringAsync(url);
-            return (JsonConvert.DeserializeObject(json) as dynamic)?.href;
+            var doc = JsonSerializer.Deserialize<JsonElement>(json);
+            return doc.TryGetProperty("href", out var href)
+                ? href.GetString()
+                : null;
         }
         
         return rawUrl;

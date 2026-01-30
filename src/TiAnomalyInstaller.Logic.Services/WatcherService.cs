@@ -34,7 +34,7 @@ public sealed class WatcherService(ILogger<WatcherService> logger) : IWatcherSer
     public void Start(string parentPath, params string[] folderNames)
     {
         if (_watcher != null)
-            throw new InvalidOperationException("Watcher already started");
+            return;
 
         if (!Directory.Exists(parentPath))
             throw new DirectoryNotFoundException(parentPath);

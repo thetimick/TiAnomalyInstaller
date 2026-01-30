@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 
@@ -10,6 +11,10 @@ public partial class MainWindow : Window
     
     public MainWindow()
     {
+        #if DEBUG
+        this.AttachDevTools();
+        #endif
+        
         InitializeComponent();
         
         DataContext = ViewModel;

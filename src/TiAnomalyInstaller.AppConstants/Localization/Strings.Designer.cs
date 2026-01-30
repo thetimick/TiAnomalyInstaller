@@ -78,7 +78,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Вы отменили операцию.
+        ///   Looks up a localized string similar to Операция отменена.
         /// </summary>
         public static string mw_alert_operation_cancelled {
             get {
@@ -150,6 +150,15 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отмена текущей операции... Пожалуйста, подождите....
+        /// </summary>
+        public static string mw_progress_title_cancelling {
+            get {
+                return ResourceManager.GetString("mw_progress_title_cancelling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Загрузка {0} ({1} % \ {2} из {3}, {4}/s \ {5}).
         /// </summary>
         public static string mw_progress_title_download {
@@ -177,7 +186,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Для установки доступна версия {0}.
+        ///   Looks up a localized string similar to Актуальная версия {0}; Потребуется места: {1}.
         /// </summary>
         public static string mw_progress_title_install_available {
             get {
@@ -186,7 +195,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Готово к запуску.
+        ///   Looks up a localized string similar to Наслаждайтесь!.
         /// </summary>
         public static string mw_progress_title_play_available {
             get {

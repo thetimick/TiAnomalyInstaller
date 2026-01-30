@@ -15,7 +15,7 @@ using TiAnomalyInstaller.Logic.Orchestrators.Components;
 using TiAnomalyInstaller.Logic.Orchestrators.Entities;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
-using TiAnomalyInstaller.Logic.Services.Entities.ConfigService;
+using Version = SemanticVersioning.Version;
 
 namespace TiAnomalyInstaller.Logic.Orchestrators;
 
@@ -23,7 +23,7 @@ public interface IInstallOrchestrator : IOrchestrator<InstallEventArgs>;
 
 public partial class InstallOrchestrator(
     IStorageService storageService,
-    IConfigServiceV2 configService,
+    IConfigService configService,
     IHashCheckerService hashCheckerService,
     IOrganizerService organizerService,
     ITransferService transferService,
@@ -35,17 +35,24 @@ public partial class InstallOrchestrator(
     
     public async Task StartAsync(CancellationToken token = default)
     {
-        // Загружаем конфиг
+        // Достаем параметры
         var url = storageService.GetString(StorageServiceKey.ProfileUrl) ?? "";
         var config = await configService.ObtainRemoteConfigAsync(url, false);
 
         // Первоначальные проверки
         Initial(config);
 
-        // Загружаем архивы и распаковываем архивы
+        // Загружаем архивы и распаковываем
 
+        var archives = GetArchives(config);
+        if (archives.Count == 0)
+        {
+            logger.LogInformation("Archives is empty");
+            return;
+        }
+        
         await Parallel.ForEachAsync(
-            config.Archives, 
+            archives, 
             new ParallelOptions {
                 MaxDegreeOfParallelism = 4, 
                 CancellationToken = token
@@ -54,7 +61,8 @@ public partial class InstallOrchestrator(
                 await DownloadArchiveAsync(archive, cts);
                 await UnpackArchiveAsync(archive, cts);
                 Handler?.Invoke(this, new InstallEventArgs {
-                    Identifier = archive.Hash,
+                    Type = InstallEventArgs.InstallType.Complete,
+                    Identifier = archive.Checksum.Value,
                     IsCompleted = true
                 });
             }
@@ -63,18 +71,19 @@ public partial class InstallOrchestrator(
         // Объединяем директории
         
         Handler?.Invoke(this, new InstallEventArgs {
+            Type = InstallEventArgs.InstallType.Merge,
             Identifier = "0",
             Title = "Финализация...",
             IsIndeterminate = true
         });
         
-        await MergeAllContentAsync(config, token);
+        await MergeAllContentAsync(archives, token);
         
         // Правим конфиг MO2
-        await organizerService.ConfigureAsync(config.Profile, token);
+        await organizerService.ConfigureAsync(config.Metadata.Profile, token);
         
         // Правим версию в локальном конфиге
-        storageService.Set(StorageServiceKey.Version, config.Version);
+        storageService.Set(StorageServiceKey.Version, config.Metadata.LatestVersion);
     }
 }
 
@@ -82,7 +91,58 @@ public partial class InstallOrchestrator(
 
 public partial class InstallOrchestrator
 {
-    private async Task DownloadArchiveAsync(RemoteConfigEntity.ArchiveEntity archive, CancellationToken token)
+    private List<RemoteConfigEntity.ArchiveItemEntity> GetArchives(RemoteConfigEntity config)
+    {
+        var rawCurrentVersion = storageService.GetString(StorageServiceKey.Version);
+        var rawLatestVersion = config.Archives.Version;
+        
+        // Какая-то ошибка в конфиге
+        if (!Version.TryParse(rawLatestVersion, out var latestVersion))
+        {
+            logger.LogInformation("Какая-то ошибка в конфиге");
+            return [];
+        }
+        
+        // Чистая установка
+        if (!Version.TryParse(rawCurrentVersion, out var currentVersion))
+        {
+            logger.LogInformation("Чистая установка");
+            return config.Archives.Install.Concat(config.Archives.Patch).ToList();
+        }
+        
+        // Версии равны - выходим, но... Как мы тут оказались?
+        if (currentVersion == latestVersion)
+        {
+            logger.LogInformation("Версии равны - выходим, но... Как мы тут оказались?");
+            return [];
+        }
+        
+        // Версии не равны - обновление
+        var install = config.Archives.Install
+            .Where(entity => {
+                if (!Version.TryParse(entity.Version, out var version))
+                    return false;
+                return version > currentVersion;
+            })
+            .ToList();
+        
+        var patch = config.Archives.Patch
+            .Where(entity => {
+                if (!Version.TryParse(entity.Patch?.FromVersion, out var fromVersion))
+                    return false;
+                return fromVersion >= currentVersion;
+            })
+            .ToList();
+        
+        if (logger.IsEnabled(LogLevel.Information))
+            logger.LogInformation("Install Archives count is {installCount} / Patch Archives count is {patchCount}", install.Count, patch.Count);
+        
+        return install
+            .Concat(patch)
+            .ToList();
+    } 
+    
+    private async Task DownloadArchiveAsync(RemoteConfigEntity.ArchiveItemEntity archive, CancellationToken token)
     {
         var fileName = Path.Combine(Constants.StorageDownloadFolder, archive.FileName);
         
@@ -101,13 +161,14 @@ public partial class InstallOrchestrator
                 return false;
             
             Handler?.Invoke(this, new InstallEventArgs {
-                Identifier = archive.Hash,
+                Type = InstallEventArgs.InstallType.Hash,
+                Identifier = archive.Checksum.Value,
                 Title = string.Format(Strings.mw_progress_title_hash, Path.GetFileName(fileName)), 
                 IsIndeterminate = true
             });
             
             // Хеш совпадает, файл загружать не нужно
-            if (await hashCheckerService.OnFileAsync(fileName, archive.Hash, token))
+            if (await hashCheckerService.OnFileAsync(fileName, archive.Checksum.Value, token))
                 return true;
                 
             File.Delete(fileName);
@@ -127,14 +188,15 @@ public partial class InstallOrchestrator
             var etaAsString = TimeSpan.FromSeconds(eta).Humanize(precision: 1, minUnit: TimeUnit.Second, maxUnit: TimeUnit.Day, culture: CultureInfo.CurrentCulture);
             
             Handler?.Invoke(this, new InstallEventArgs {
-                Identifier = archive.Hash,
+                Type = InstallEventArgs.InstallType.Download,
+                Identifier = archive.Checksum.Value,
                 Title = string.Format(Strings.mw_progress_title_download, archive.FileName, $"{entity.ProgressPercentage:F}", received, total, speed, etaAsString),
                 Value = entity.ProgressPercentage
             });
         }
     }
     
-    private async Task UnpackArchiveAsync(RemoteConfigEntity.ArchiveEntity archive, CancellationToken token)
+    private async Task UnpackArchiveAsync(RemoteConfigEntity.ArchiveItemEntity archive, CancellationToken token)
     {
         var fileName = Path.Combine(Constants.StorageDownloadFolder, archive.FileName);
         var directory = Path.Combine(Constants.StorageDownloadFolder, Path.GetFileNameWithoutExtension(archive.FileName));
@@ -151,27 +213,22 @@ public partial class InstallOrchestrator
         void InternalHandler(byte progress)
         {
             Handler?.Invoke(this, new InstallEventArgs {
-                Identifier = archive.Hash,
+                Type = InstallEventArgs.InstallType.Unpack,
+                Identifier = archive.Checksum.Value,
                 Title = string.Format(Strings.mw_progress_title_unpack, archive.FileName, progress),
                 Value = progress
             });
         }
     }
 
-    private async Task MergeAllContentAsync(RemoteConfigEntity config, CancellationToken token)
+    private async Task MergeAllContentAsync(List<RemoteConfigEntity.ArchiveItemEntity> archives, CancellationToken token)
     {
-        foreach (var archive in config.Archives)
+        foreach (var archive in archives)
         {
             var sourceDirectory = Path.Combine(Constants.StorageDownloadFolder, Path.GetFileNameWithoutExtension(archive.FileName));
             if (!Directory.Exists(sourceDirectory)) 
                 continue;
-            
-            var destDirectory = archive.Type switch {
-                RemoteConfigEntity.ArchiveEntity.ArchiveType.Vanilla => Constants.VanillaFolderName,
-                RemoteConfigEntity.ArchiveEntity.ArchiveType.Organizer => Constants.OrganizerFolderName,
-                _ => string.Empty
-            };
-
+            var destDirectory = Path.Combine(Constants.CurrentDirectory, archive.ExtractToFolder);
             await transferService.MoveDirectory(sourceDirectory, destDirectory, token);
         }
     }
@@ -191,13 +248,13 @@ public partial class InstallOrchestrator
     
     private static bool ArchiveListIsEmpty(RemoteConfigEntity config)
     {
-        return config.Archives.Count == 0;
+        return config.Archives.Install.Count == 0;
     } 
     
     private static bool FreeSpaceIsNotAvailable(RemoteConfigEntity config)
     {
         var disk = new DriveInfo(Constants.CurrentDirectory);
-        return disk.AvailableFreeSpace <= config.Size.SizeForInstall;
+        return disk.AvailableFreeSpace <= config.Size.DownloadBytes + config.Size.InstallBytes;
     }
 }
 

@@ -34,19 +34,19 @@
         <value>Отмена</value>
     </data>
     <data name="mw_progress_title_play_available" xml:space="preserve">
-        <value>Готово к запуску</value>
+        <value>Наслаждайтесь!</value>
     </data>
     <data name="mw_progress_title_update_available" xml:space="preserve">
         <value>Доступно обновление! {0} =&gt; {1}</value>
     </data>
     <data name="mw_progress_title_install_available" xml:space="preserve">
-        <value>Для установки доступна версия {0}</value>
+        <value>Актуальная версия {0}; Потребуется места: {1}</value>
     </data>
     <data name="mw_common_wait" xml:space="preserve">
         <value>Пожалуйста, подождите...</value>
     </data>
     <data name="mw_alert_operation_cancelled" xml:space="preserve">
-        <value>Вы отменили операцию</value>
+        <value>Операция отменена</value>
     </data>
     <data name="mw_progress_title_hash" xml:space="preserve">
         <value>Проверка {0}</value>
@@ -77,5 +77,8 @@
     </data>
     <data name="sw_button_save" xml:space="preserve">
         <value>Сохранить</value>
+    </data>
+    <data name="mw_progress_title_cancelling" xml:space="preserve">
+        <value>Отмена текущей операции... Пожалуйста, подождите...</value>
     </data>
 </root>

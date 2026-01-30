@@ -14,4 +14,7 @@ public partial class MainWindowViewModel
 {
     [LoggerMessage(Level = LogLevel.Error)]
     private partial void LogError(Exception ex);
+    
+    [LoggerMessage(Level = LogLevel.Information, Message = "{message}")]
+    private partial void LogInfo(string message);
 }

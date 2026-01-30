@@ -7,7 +7,6 @@
 
 using Avalonia;
 using System;
-using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,37 +16,50 @@ namespace TiAnomalyInstaller.UI.Avalonia;
 
 public static partial class Program
 {
+    // ────────────────────────────────────────────────
     // Private Props
+    // ────────────────────────────────────────────────
     
     private static IHost _host = null!;
     
-    // Main
+    // ────────────────────────────────────────────────
+    // Lifecycle
+    // ────────────────────────────────────────────────
     
     [STAThread]
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
-        _host = Host.CreateDefaultBuilder(args)
-            .ConfigureHostConfiguration(builder => builder.SetBasePath(Environment.CurrentDirectory))
-            .ConfigureServices(ConfigureServices)
-            .Build();
-        
-        await _host.StartAsync();
-        
-        AppBuilder
-            .Configure(GetRequiredService<App>)
-            .UsePlatformDetect()
-            .LogToTrace()
+        BuildAvaloniaApp(args)
             .StartWithClassicDesktopLifetime(
                 args,
                 lifetime => {
-                    lifetime.ShutdownRequested += async (_, _) => {
+                    lifetime.Exit += async (_, _) => {
                         await _host.StopAsync();
                     };
                 }
             );
     }
-    
+
+    // ────────────────────────────────────────────────
     // Helpers
+    // ────────────────────────────────────────────────
+    
+    // ReSharper disable once UnusedMember.Global
+    public static AppBuilder BuildAvaloniaApp()
+        => BuildAvaloniaApp([]);
+    
+    private static AppBuilder BuildAvaloniaApp(string[] args)
+    {
+        _host = Host.CreateDefaultBuilder(args)
+            .ConfigureHostConfiguration(builder => builder.SetBasePath(Environment.CurrentDirectory))
+            .ConfigureServices(ConfigureServices)
+            .Build();
+        _host.StartAsync().Wait();
+        return AppBuilder
+            .Configure(() => _host.Services.GetRequiredService<App>())
+            .UsePlatformDetect()
+            .LogToTrace();
+    }
     
     public static T GetRequiredService<T>() where T : notnull
     {
@@ -57,21 +69,5 @@ public static partial class Program
     public static IClassicDesktopStyleApplicationLifetime? GetLifetime()
     {
         return GetRequiredService<App>().ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
-    }
-    
-    // Preview
-    
-    private static AppBuilder BuildAvaloniaApp()
-    {
-        _host = Host.CreateDefaultBuilder()
-            .ConfigureHostConfiguration(builder => builder.SetBasePath(Environment.CurrentDirectory))
-            .ConfigureServices(ConfigureServices)
-            .Build();
-        _host.StartAsync()
-            .Wait();
-        return AppBuilder
-            .Configure(() => _host.Services.GetRequiredService<App>())
-            .UsePlatformDetect()
-            .LogToTrace();
     }
 }

@@ -2,63 +2,46 @@
 // ConfigService.cs
 // TiAnomalyInstaller.Logic.Services
 // 
-// Created by the_timick on 07.01.2026.
+// Created by the_timick on 17.01.2026.
 // ⠀
 
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using TiAnomalyInstaller.AppConstants;
-using TiAnomalyInstaller.Logic.Services.Entities.ConfigService;
-using Tomlyn;
+using TiAnomalyInstaller.Logic.Services.Entities;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace TiAnomalyInstaller.Logic.Services;
 
 public interface IConfigService
 {
-    public LocalConfigEntity? LocalCached { get; }
-    public RemoteConfigEntity? RemoteCached { get; }
-    
-    public LocalConfigEntity GetLocalConfig();
-    public Task<RemoteConfigEntity> ObtainRemoteConfigAsync();
-
-    public void SaveLocalConfig();
+    public RemoteConfigEntity? Cached { get; }
+    public Task<RemoteConfigEntity> ObtainRemoteConfigAsync(string url, bool force);
 }
 
 public class ConfigService(
     HttpClient client, 
     ILogger<ConfigService> logger
-): IConfigService {
-    public LocalConfigEntity? LocalCached { get; private set; }
-    public RemoteConfigEntity? RemoteCached { get; private set; }
-
-    public LocalConfigEntity GetLocalConfig()
-    {
-        if (LocalCached != null)
-            return LocalCached;
-        var content = File.ReadAllText(Constants.Files.LocalConfigFileName);
-        LocalCached = Toml.ToModel<LocalConfigEntity>(content);
-        
-        if (logger.IsEnabled(LogLevel.Information))
-            logger.LogInformation("{Path} loaded!", Constants.Files.LocalConfigFileName);
-        return LocalCached;
-    }
+ ): IConfigService {
+    public RemoteConfigEntity? Cached { get; private set; }
     
-    public async Task<RemoteConfigEntity> ObtainRemoteConfigAsync()
+    public async Task<RemoteConfigEntity> ObtainRemoteConfigAsync(string url, bool force)
     {
-        if (RemoteCached != null)
-            return RemoteCached;
-        var local = GetLocalConfig();
-        var content = await client.GetStringAsync(local.Url);
-        RemoteCached = JsonConvert.DeserializeObject<RemoteConfigEntity>(content);
-
-        if (logger.IsEnabled(LogLevel.Information))
-            logger.LogInformation("{Url} loaded!", local.Url);
-        return RemoteCached ?? throw new NullReferenceException();
-    }
-
-    public void SaveLocalConfig()
-    {
-        if (LocalCached is { } config) 
-            File.WriteAllText(Constants.Files.LocalConfigFileName, Toml.FromModel(config));
+        try
+        {
+            if (Cached != null && !force)
+                return Cached;
+            var content = await client.GetStringAsync(url);
+            Cached = new DeserializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .Build()
+                .Deserialize<RemoteConfigEntity>(content);
+            return Cached ?? throw new NullReferenceException();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("{ex}", ex);
+            throw;
+        }
     }
 }

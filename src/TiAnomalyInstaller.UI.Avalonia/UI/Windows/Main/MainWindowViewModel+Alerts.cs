@@ -15,34 +15,25 @@ namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
 public partial class MainWindowViewModel
 {
-    private async Task<ButtonResult?> ShowQuestionAsync(string msg)
+    public async Task ShowInfoOnMainAsync(string message)
     {
-        if (_lifetime?.MainWindow is not { } window)
-            return null;
-        
-        return await MessageBoxManager
-            .GetMessageBoxStandard(
-                string.Empty,
-                msg,
-                ButtonEnum.YesNoCancel,
-                Icon.Question
-            )
-            .ShowAsPopupAsync(window);
+        await Dispatcher.UIThread.InvokeAsync(async () => {
+            await ShowInfoAsync(message);
+        });
     }
     
     private async Task ShowInfoAsync(string message)
     {
-        if (_lifetime?.MainWindow is { } window)
-        {
-            await MessageBoxManager
-                .GetMessageBoxStandard(
-                    string.Empty,
-                    message,
-                    ButtonEnum.Ok,
-                    Icon.Info
-                )
-                .ShowAsPopupAsync(window);
-        }
+        if (_lifetime?.MainWindow is not { } window)
+            return;
+        await MessageBoxManager
+            .GetMessageBoxStandard(
+                string.Empty,
+                message,
+                ButtonEnum.Ok,
+                Icon.Info
+            )
+            .ShowAsPopupAsync(window);
     }
     
     private async Task ShowErrorWithExitAsync(Exception ex)
@@ -55,22 +46,21 @@ public partial class MainWindowViewModel
     {
         LogError(ex);
         await Dispatcher.UIThread.InvokeAsync(async () => {
-            if (_lifetime?.MainWindow is { } window)
-            {
-                await MessageBoxManager
-                    .GetMessageBoxStandard(
-                        string.Empty, 
-                        $"""
-                         Произошла ошибка!
-                         Пожалуйста, обратитесь к разработчику.
+            if (_lifetime?.MainWindow is not { } window)
+                return;
+            await MessageBoxManager
+                .GetMessageBoxStandard(
+                    string.Empty, 
+                    $"""
+                     Произошла ошибка!
+                     Пожалуйста, обратитесь к разработчику.
 
-                         {ex}
-                         """,
-                        ButtonEnum.Ok, 
-                        Icon.Error
-                    )
-                    .ShowAsPopupAsync(window);
-            }
+                     {ex}
+                     """,
+                    ButtonEnum.Ok, 
+                    Icon.Error
+                )
+                .ShowAsPopupAsync(window);
         });
     }
 }
