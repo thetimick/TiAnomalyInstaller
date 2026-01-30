@@ -7,6 +7,7 @@
 
 using System.ComponentModel;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using DebounceThrottle;
 using Downloader;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ public interface IDownloaderService
     public Task CancelAsync();
 }
 
-public class DownloaderService: IDownloaderService
+public partial class DownloaderService: IDownloaderService
 {
     // Props
     
@@ -83,6 +84,18 @@ public class DownloaderService: IDownloaderService
                 : null;
         }
         
+        // Если URL от Google - формируем ссылку
+        // ReSharper disable once InvertIf
+        if (rawUrl.Contains(Constants.Utils.GoogleDriveDomain))
+        {
+            var match = GoogleDriveUrlRegex().Match(rawUrl);
+            if (!match.Success) 
+                return rawUrl;
+            var id = match.Groups[1].Value;
+            return Constants.Utils.GoogleDriveTemplateUrl
+                .Replace("<file_id>", id);
+        }
+        
         return rawUrl;
     }
     
@@ -109,4 +122,7 @@ public class DownloaderService: IDownloaderService
             );
         });
     }
+
+    [GeneratedRegex(@"(?:/d/|id=)([a-zA-Z0-9_-]{10,})", RegexOptions.Compiled)]
+    private static partial Regex GoogleDriveUrlRegex();
 }

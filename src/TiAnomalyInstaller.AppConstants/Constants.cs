@@ -28,6 +28,8 @@ public static class Constants
     {
         public const string YandexDiskDomain = "disk.yandex.ru";
         public const string YandexDiskResourcesApi = "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=<key>";
+        public const string GoogleDriveDomain = "drive.google.com";
+        public const string GoogleDriveTemplateUrl = "https://drive.google.com/uc?export=download&id=<file_id>";
     }
     
     public const string Vanilla = "Vanilla";
