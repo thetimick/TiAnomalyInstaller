@@ -11,7 +11,7 @@ namespace TiAnomalyInstaller.Logic.Services;
 
 public enum InMemoryStorageKey
 {
-    ConfigError
+    GlobalError
 }
 
 public interface IInMemoryStorageService

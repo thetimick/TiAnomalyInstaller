@@ -162,22 +162,21 @@
   <data name="mw_button_settings" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="alert_error_title" xml:space="preserve">
-    <value>Ошибка</value>
-  </data>
-  <data name="alert_error_text" xml:space="preserve">
-    <value>Произошла ошибка!\n{0}</value>
-  </data>
-  <data name="sw_profile_new" xml:space="preserve">
-    <value>НОВЫЙ ПРОФИЛЬ</value>
-  </data>
-  <data name="sw_button_save" xml:space="preserve">
-    <value>Сохранить</value>
-  </data>
-  <data name="sw_button_exit" xml:space="preserve">
-    <value>Выход</value>
-  </data>
   <data name="mw_progress_title_cancelling" xml:space="preserve">
     <value>Отмена текущей операции... Пожалуйста, подождите...</value>
+  </data>
+  <data name="throw_internet_unavailable" xml:space="preserve">
+    <value>Отсутствует доступ в интернет!
+Дальнейшая работа программы невозможна.</value>
+  </data>
+  <data name="mw_alert_internet_unavailable" xml:space="preserve">
+    <value>Отсутствует доступ в интернет!
+Дальнейшая работа программы невозможна.</value>
+  </data>
+  <data name="mw_alert_error" xml:space="preserve">
+    <value>Произошла ошибка!
+Пожалуйста, обратитесь к разработчику.
+---
+{0}</value>
   </data>
 </root>

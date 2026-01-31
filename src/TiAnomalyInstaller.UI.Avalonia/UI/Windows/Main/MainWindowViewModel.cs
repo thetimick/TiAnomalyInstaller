@@ -99,7 +99,9 @@ public partial class MainWindowViewModel(
         try
         {
             _lifetime = Program.GetLifetime();
-            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.ConfigError) is { } ex)
+            
+            // Глобальная ошибка при инициализации
+            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.GlobalError) is { } ex)
                 throw ex;
             
             _config = configService.Cached ?? throw new ArgumentNullException();

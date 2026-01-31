@@ -16,7 +16,7 @@
     d:DesignWidth="1280"
     x:DataType="vm:MainWindowViewModel"
     CanMaximize="False"
-    CanResize="False"
+    CanResize="True"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaToDecorationsHint="True"
     FontFamily="{StaticResource MontserratFont}"
