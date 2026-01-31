@@ -5,7 +5,6 @@
 // Created by the_timick on 17.01.2026.
 // ⠀
 
-using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using TiAnomalyInstaller.Logic.Services.Entities;
 using YamlDotNet.Serialization;
