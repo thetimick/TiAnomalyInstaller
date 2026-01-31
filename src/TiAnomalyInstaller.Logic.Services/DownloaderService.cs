@@ -6,6 +6,7 @@
 // ⠀
 
 using System.ComponentModel;
+using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using DebounceThrottle;
@@ -13,6 +14,8 @@ using Downloader;
 using Microsoft.Extensions.Logging;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Services.Entities;
+using TiAnomalyInstaller.Logic.Services.Providers;
+using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;
 
 namespace TiAnomalyInstaller.Logic.Services;
 
@@ -41,12 +44,16 @@ public partial class DownloaderService: IDownloaderService
         }
     );
 
-    private readonly HttpClient _httpClient = new();
+    private readonly IUrlProvider _urlProvider;
+    private readonly HttpClient _httpClient;
 
     // LifeCycle
 
-    public DownloaderService(ILogger<DownloaderService> logger)
+    public DownloaderService(IUrlProvider urlProvider, HttpClient client, ILogger<DownloaderService> logger)
     {
+        _urlProvider = urlProvider;
+        _httpClient = client;
+        
         _throttle = new ThrottleDispatcher(TimeSpan.FromSeconds(1));
         _service.DownloadProgressChanged += ServiceOnDownloadProgressChanged;
         _service.DownloadFileCompleted += ServiceOnDownloadFileCompleted;
@@ -57,7 +64,7 @@ public partial class DownloaderService: IDownloaderService
     
     public async Task DownloadFileAsync(string rawUrl, string fileName, CancellationToken token)
     {
-        var url = await ObtainUrlAsync(rawUrl);
+        var url = await _urlProvider.ObtainUrl(rawUrl);
         await _service.DownloadFileTaskAsync(url, fileName, token);
         Handler = null;
     }
@@ -68,36 +75,6 @@ public partial class DownloaderService: IDownloaderService
     }
 
     // Private Methods
-    
-    private async Task<string?> ObtainUrlAsync(string rawUrl)
-    {
-        // Если URL от Yandex - получаем ссылку
-        // ReSharper disable once InvertIf
-        if (rawUrl.Contains(Constants.Utils.YandexDiskDomain))
-        {
-            var url = Constants.Utils.YandexDiskResourcesApi
-                .Replace("<key>", Uri.EscapeDataString(rawUrl));
-            var json = await _httpClient.GetStringAsync(url);
-            var doc = JsonSerializer.Deserialize<JsonElement>(json);
-            return doc.TryGetProperty("href", out var href)
-                ? href.GetString()
-                : null;
-        }
-        
-        // Если URL от Google - формируем ссылку
-        // ReSharper disable once InvertIf
-        if (rawUrl.Contains(Constants.Utils.GoogleDriveDomain))
-        {
-            var match = GoogleDriveUrlRegex().Match(rawUrl);
-            if (!match.Success) 
-                return rawUrl;
-            var id = match.Groups[1].Value;
-            return Constants.Utils.GoogleDriveTemplateUrl
-                .Replace("<file_id>", id);
-        }
-        
-        return rawUrl;
-    }
     
     private void ServiceOnDownloadProgressChanged(object? sender, DownloadProgressChangedEventArgs e)
     {
@@ -122,7 +99,4 @@ public partial class DownloaderService: IDownloaderService
             );
         });
     }
-
-    [GeneratedRegex(@"(?:/d/|id=)([a-zA-Z0-9_-]{10,})", RegexOptions.Compiled)]
-    private static partial Regex GoogleDriveUrlRegex();
 }

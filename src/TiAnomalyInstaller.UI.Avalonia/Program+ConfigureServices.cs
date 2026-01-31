@@ -12,6 +12,7 @@ using Serilog;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Orchestrators;
 using TiAnomalyInstaller.Logic.Services;
+using TiAnomalyInstaller.Logic.Services.Providers;
 using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
 namespace TiAnomalyInstaller.UI.Avalonia;
@@ -35,7 +36,8 @@ public static partial class Program
         
         // Internal
         collection.AddHostedService<AppService>();
-
+        
+        // Services
         collection.AddSingleton<IPlayOrchestrator, PlayOrchestrator>();
         collection.AddSingleton<IInstallOrchestrator, InstallOrchestrator>();
         collection.AddSingleton<IConfigService, ConfigService>();
@@ -50,6 +52,9 @@ public static partial class Program
         
         collection.AddTransient<IDownloaderService, DownloaderService>();
         collection.AddTransient<ISevenZipService, SevenZipService>();
+        
+        // Providers
+        collection.AddSingleton<IUrlProvider, UrlProvider>();
 
         collection.AddSingleton<App>();
         
