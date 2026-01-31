@@ -1,0 +1,36 @@
+schema_version: 1.0
+metadata:
+  title: ~ Template ~
+  profile: Default
+  latest_version: 1.0.0
+visual:
+  background_image: null
+size:
+  download_bytes: 13519516678
+  install_bytes: 26446854973
+archives:
+  install:
+    - url: https://drive.google.com/file/d/1Opa203d4v_LU1Nc2yzVZFz49HXr0BSbj/view?usp=sharing
+      file_name: archive_drive.7z
+      extract_to_folder: Vanilla
+      version: 1.0.0
+      checksum:
+        algorithm: MD5
+        value: 15A87D6FA12A20027365395C8B3A923E
+    - url: https://disk.yandex.ru/d/KxZEKMAOXPgcTA
+      file_name: archive_yandex.7z
+      extract_to_folder: Organizer
+      version: 1.0.0
+      checksum:
+        algorithm: MD5
+        value: 9095AE2B6820A007A50A690CC04642C7
+  patch:
+    - url: https://github.com/thetimick/TiAnomalyInstaller/raw/refs/heads/main/template/archives/archive_direct.zip
+      file_name: archive_direct.zip
+      extract_to_folder: Vanilla
+      patch:
+        from_version: 1.0.0
+        to_version: 1.1.0
+      checksum:
+        algorithm: MD5
+        value: 0D18F4229D69808590D1FDFA1DED780A
