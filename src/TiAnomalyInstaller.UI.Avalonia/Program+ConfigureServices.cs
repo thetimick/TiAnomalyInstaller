@@ -34,7 +34,7 @@ public static partial class Program
         collection.AddHttpClient("default", client => client.Timeout = TimeSpan.FromSeconds(5));
         
         // Internal
-        collection.AddHostedService<HostedService>();
+        collection.AddHostedService<AppService>();
 
         collection.AddSingleton<IPlayOrchestrator, PlayOrchestrator>();
         collection.AddSingleton<IInstallOrchestrator, InstallOrchestrator>();
@@ -46,6 +46,7 @@ public static partial class Program
         collection.AddSingleton<IPlayingService, PlayingService>();
         collection.AddSingleton<IWatcherService, WatcherService>();
         collection.AddSingleton<IStorageService, StorageService>(provider => new StorageService(Constants.StorageFolder, provider.GetRequiredService<ILogger<StorageService>>()));
+        collection.AddSingleton<IInternetAvailabilityService, InternetAvailabilityService>();
         
         collection.AddTransient<IDownloaderService, DownloaderService>();
         collection.AddTransient<ISevenZipService, SevenZipService>();

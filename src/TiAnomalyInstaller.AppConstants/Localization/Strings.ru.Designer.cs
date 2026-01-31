@@ -60,20 +60,14 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Произошла ошибка!\n{0}.
+        ///   Looks up a localized string similar to Произошла ошибка!
+        ///Пожалуйста, обратитесь к разработчику.
+        ///---
+        ///{0}.
         /// </summary>
-        internal static string alert_error_text {
+        internal static string mw_alert_error {
             get {
-                return ResourceManager.GetString("alert_error_text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Ошибка.
-        /// </summary>
-        internal static string alert_error_title {
-            get {
-                return ResourceManager.GetString("alert_error_title", resourceCulture);
+                return ResourceManager.GetString("mw_alert_error", resourceCulture);
             }
         }
         
@@ -222,29 +216,12 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Выход.
+        ///   Looks up a localized string similar to Отсутствует доступ в интернет!
+        ///Дальнейшая работа программы невозможна..
         /// </summary>
-        internal static string sw_button_exit {
+        internal static string throw_internet_unavailable {
             get {
-                return ResourceManager.GetString("sw_button_exit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Сохранить.
-        /// </summary>
-        internal static string sw_button_save {
-            get {
-                return ResourceManager.GetString("sw_button_save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to НОВЫЙ ПРОФИЛЬ.
-        /// </summary>
-        internal static string sw_profile_new {
-            get {
-                return ResourceManager.GetString("sw_profile_new", resourceCulture);
+                return ResourceManager.GetString("throw_internet_unavailable", resourceCulture);
             }
         }
     }

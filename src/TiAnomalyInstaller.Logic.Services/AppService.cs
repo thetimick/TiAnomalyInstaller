@@ -1,5 +1,5 @@
 ﻿// ⠀
-// HostedService.cs
+// AppService.cs
 // TiAnomalyInstaller.Logic.Services
 // 
 // Created by the_timick on 07.01.2026.
@@ -12,18 +12,23 @@ using TiAnomalyInstaller.Logic.Services.Entities;
 
 namespace TiAnomalyInstaller.Logic.Services;
 
-public class HostedService(
+public class AppService(
     IStorageService storageService,
     IConfigService configService,
     IHashCheckerService hashCheckerService,
     IInMemoryStorageService inMemoryStorageService,
+    IInternetAvailabilityService internetAvailabilityService,
     HttpClient client,
-    ILogger<HostedService> logger
+    ILogger<AppService> logger
 ): IHostedService {
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         try
         {
+            // Нет доступа в интернет
+            if (!await internetAvailabilityService.HasInternetAsync(cancellationToken))
+                throw new InternetUnavailableException();
+
             var url = storageService.GetString(StorageServiceKey.ProfileUrl) ?? string.Empty;
             var remote = await configService.ObtainRemoteConfigAsync(url, false);
             await PreloadCustomBackgroundImageIfNeededAsync(remote);
@@ -32,7 +37,7 @@ public class HostedService(
         {
             if (logger.IsEnabled(LogLevel.Error))
                 logger.LogError("{ex}", ex);
-            inMemoryStorageService.SetValue(InMemoryStorageKey.ConfigError, ex);
+            inMemoryStorageService.SetValue(InMemoryStorageKey.GlobalError, ex);
         }
     }
     

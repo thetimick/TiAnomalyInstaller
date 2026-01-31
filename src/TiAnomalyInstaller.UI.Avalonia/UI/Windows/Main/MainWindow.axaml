@@ -3,7 +3,6 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:glass="clr-namespace:LiquidGlassAvaloniaUI;assembly=LiquidGlassAvaloniaUI"
     xmlns:icons="clr-namespace:FluentIcons.Avalonia;assembly=FluentIcons.Avalonia"
     xmlns:loc="clr-namespace:TiAnomalyInstaller.AppConstants.Localization;assembly=TiAnomalyInstaller.AppConstants"
     xmlns:markup="clr-namespace:FluentIcons.Avalonia.Markup;assembly=FluentIcons.Avalonia"
@@ -16,13 +15,15 @@
     d:DesignWidth="1280"
     x:DataType="vm:MainWindowViewModel"
     CanMaximize="False"
-    CanResize="False"
+    CanResize="True"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaToDecorationsHint="True"
     FontFamily="{StaticResource MontserratFont}"
     PointerPressed="OnPointerPressed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+
+    <!--  Styles  -->
 
     <Window.Styles>
         <Style Selector="Button.Anomaly">
@@ -33,6 +34,8 @@
             <Setter Property="Padding" Value="12,8,12,8" />
         </Style>
     </Window.Styles>
+
+    <!--  Resources  -->
 
     <Window.Resources>
         <MenuFlyout x:Key="ShortcutMenuFlyout" Placement="Top">
@@ -106,8 +109,10 @@
         </Flyout>
     </Window.Resources>
 
+    <!--  UI  -->
+
     <Grid
-        ColumnDefinitions="*, 0.8*"
+        ColumnDefinitions="*, 0.9*"
         RowDefinitions="*, Auto"
         RowSpacing="8">
 
@@ -120,29 +125,39 @@
             Stretch="UniformToFill" />
 
         <!--  Основное меню  -->
-        <glass:LiquidGlassSurface
+
+        <Panel
             Grid.Row="0"
             Grid.Column="1"
-            Margin="32,32,32,0"
-            BlurRadius="4"
-            Brightness="-0.1"
-            CornerRadius="16">
+            Margin="32,32,32,24">
+
+            <Border
+                Background="Black"
+                CornerRadius="16"
+                Opacity="0.8">
+
+                <Border.Effect>
+                    <BlurEffect Radius="4" />
+                </Border.Effect>
+            </Border>
 
             <Grid Margin="8" RowDefinitions="Auto, *, Auto">
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="0,4,0,4"
-                    VerticalAlignment="Center"
-                    FontFamily="{StaticResource AmazFont}"
-                    FontSize="90"
-                    Foreground="#DCDCDC"
-                    LineSpacing="-24"
-                    TextAlignment="Center">
+                <Viewbox Grid.Row="0">
+                    <TextBlock
+                        x:Name="TitleTextBlock"
+                        Padding="32,4,32,0"
+                        VerticalAlignment="Center"
+                        FontFamily="{StaticResource AmazFont}"
+                        FontSize="90"
+                        Foreground="#DCDCDC"
+                        LineSpacing="-24"
+                        TextAlignment="Center">
 
-                    <Run Text="S.T.A.L.K.E.R.: Anomaly" />
-                    <LineBreak />
-                    <Run Text="{Binding Title}" />
-                </TextBlock>
+                        <Run Text="S.T.A.L.K.E.R.: Anomaly" />
+                        <LineBreak />
+                        <Run Text="{Binding Title}" />
+                    </TextBlock>
+                </Viewbox>
 
                 <Grid
                     HorizontalAlignment="Center"
@@ -155,6 +170,7 @@
                         Spacing="8">
 
                         <!--  Играть  -->
+                        <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
                         <Button
                             HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Stretch"
@@ -174,6 +190,7 @@
                         </Button>
 
                         <!--  Установить  -->
+                        <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
                         <Button
                             HorizontalContentAlignment="Stretch"
                             Classes="accent Anomaly"
@@ -253,15 +270,12 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Grid>
-        </glass:LiquidGlassSurface>
+        </Panel>
 
-        <glass:LiquidGlassSurface
+        <Panel
             Grid.Row="1"
             Grid.Column="1"
             Margin="32,0,32,32"
-            BlurRadius="4"
-            Brightness="-0.1"
-            CornerRadius="16"
             IsVisible="False">
 
             <Grid Margin="20" ColumnDefinitions="*, Auto">
@@ -312,6 +326,6 @@
                         Flyout="{StaticResource AboutFlyout}" />
                 </StackPanel>
             </Grid>
-        </glass:LiquidGlassSurface>
+        </Panel>
     </Grid>
 </Window>

@@ -27,6 +27,7 @@ using TiAnomalyInstaller.Logic.Orchestrators.Entities;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
 using TiAnomalyInstaller.UI.Avalonia.Extensions;
+using TiAnomalyInstaller.UI.Avalonia.Resources;
 
 namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
@@ -54,7 +55,7 @@ public partial class MainWindowViewModel(
     
     [ObservableProperty]
     public partial Bitmap BackgroundImageFileName { get; set; } = new(
-        AssetLoader.Open(new Uri("avares://TiAnomalyInstaller.UI.Avalonia/Resources/Assets/background_720.jpg"))
+        AssetLoader.Open(new Uri(InternalConstants.BackgroundImagePath))
     );
     
     [ObservableProperty]
@@ -99,7 +100,9 @@ public partial class MainWindowViewModel(
         try
         {
             _lifetime = Program.GetLifetime();
-            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.ConfigError) is { } ex)
+            
+            // Глобальная ошибка при инициализации
+            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.GlobalError) is { } ex)
                 throw ex;
             
             _config = configService.Cached ?? throw new ArgumentNullException();

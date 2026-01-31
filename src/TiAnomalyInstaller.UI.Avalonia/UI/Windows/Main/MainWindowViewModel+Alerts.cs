@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using TiAnomalyInstaller.AppConstants.Localization;
+using TiAnomalyInstaller.Logic.Services;
 
 namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
@@ -48,18 +50,13 @@ public partial class MainWindowViewModel
         await Dispatcher.UIThread.InvokeAsync(async () => {
             if (_lifetime?.MainWindow is not { } window)
                 return;
+            var content = ex switch
+            {
+                InternetUnavailableException => ex.Message,
+                _ => string.Format(Strings.mw_alert_error, ex)
+            };
             await MessageBoxManager
-                .GetMessageBoxStandard(
-                    string.Empty, 
-                    $"""
-                     Произошла ошибка!
-                     Пожалуйста, обратитесь к разработчику.
-
-                     {ex}
-                     """,
-                    ButtonEnum.Ok, 
-                    Icon.Error
-                )
+                .GetMessageBoxStandard(string.Empty, content, ButtonEnum.Ok, Icon.Error)
                 .ShowAsPopupAsync(window);
         });
     }
