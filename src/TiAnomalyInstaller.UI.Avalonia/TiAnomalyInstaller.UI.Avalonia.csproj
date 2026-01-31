@@ -40,7 +40,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LiquidGlassAvaloniaUI\LiquidGlassAvaloniaUI.csproj" />
       <ProjectReference Include="..\TiAnomalyInstaller.Logic.Orchestrators\TiAnomalyInstaller.Logic.Orchestrators.csproj" />
       <ProjectReference Include="..\TiAnomalyInstaller.Logic.Services\TiAnomalyInstaller.Logic.Services.csproj" />
     </ItemGroup>
