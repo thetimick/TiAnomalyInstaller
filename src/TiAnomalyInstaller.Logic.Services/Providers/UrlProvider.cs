@@ -81,6 +81,4 @@ public partial class UrlProvider
             logger.LogInformation("Detected Google Drive url; Converted from {from} to {to}", raw, url);
         return url;
     }
-    
-    // https://drive.usercontent.google.com/download?id=1Opa203d4v_LU1Nc2yzVZFz49HXr0BSbj&export=download&authuser=0&confirm=t&uuid=38bdbc40-c692-4635-bbac-e5f5cd3d5ffd&at=APcXIO2OS8Oaxnj4_ihtuLLtJ9M7%3A1769884275961
 }

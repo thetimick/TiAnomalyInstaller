@@ -73,7 +73,7 @@ public partial class InstallOrchestrator(
         Handler?.Invoke(this, new InstallEventArgs {
             Type = InstallEventArgs.InstallType.Merge,
             Identifier = "0",
-            Title = "Финализация...",
+            Title = Strings.mw_progress_title_finalization,
             IsIndeterminate = true
         });
         
@@ -96,28 +96,24 @@ public partial class InstallOrchestrator
         var rawCurrentVersion = storageService.GetString(StorageServiceKey.Version);
         var rawLatestVersion = config.Archives.Version;
         
-        // Какая-то ошибка в конфиге
         if (!Version.TryParse(rawLatestVersion, out var latestVersion))
         {
-            logger.LogInformation("Какая-то ошибка в конфиге");
+            logger.LogInformation("Some error in the config");
             return [];
         }
-        
-        // Чистая установка
+
         if (!Version.TryParse(rawCurrentVersion, out var currentVersion))
         {
-            logger.LogInformation("Чистая установка");
+            logger.LogInformation("Clean installation");
             return config.Archives.Install.Concat(config.Archives.Patch).ToList();
         }
-        
-        // Версии равны - выходим, но... Как мы тут оказались?
+
         if (currentVersion == latestVersion)
         {
-            logger.LogInformation("Версии равны - выходим, но... Как мы тут оказались?");
+            logger.LogInformation("Versions are equal — exiting, but... how did we even get here?");
             return [];
         }
         
-        // Версии не равны - обновление
         var install = config.Archives.Install
             .Where(entity => {
                 if (!Version.TryParse(entity.Version, out var version))
@@ -240,16 +236,9 @@ public partial class InstallOrchestrator
 {
     private static void Initial(RemoteConfigEntity config)
     {
-        if (ArchiveListIsEmpty(config))
-            throw new ArchiveListIsEmptyException();
         if (FreeSpaceIsNotAvailable(config))
             throw new FreeSpaceIsNotAvailableException();
     }
-    
-    private static bool ArchiveListIsEmpty(RemoteConfigEntity config)
-    {
-        return config.Archives.Install.Count == 0;
-    } 
     
     private static bool FreeSpaceIsNotAvailable(RemoteConfigEntity config)
     {
@@ -273,10 +262,6 @@ public partial class InstallOrchestrator
 
 public partial class InstallOrchestrator
 {
-    public class ArchiveListIsEmptyException(
-        string message = "Archive list is empty."
-    ) : Exception(message);
-
     public class FreeSpaceIsNotAvailableException(
         string message = "Not enough free disk space."
     ) : Exception(message);

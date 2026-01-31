@@ -72,6 +72,16 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Отсутствует доступ в интернет!
+        ///Дальнейшая работа программы невозможна..
+        /// </summary>
+        internal static string mw_alert_internet_unavailable {
+            get {
+                return ResourceManager.GetString("mw_alert_internet_unavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Операция отменена.
         /// </summary>
         internal static string mw_alert_operation_cancelled {

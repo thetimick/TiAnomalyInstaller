@@ -60,8 +60,8 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Произошла ошибка!
-        ///Пожалуйста, обратитесь к разработчику.
+        ///   Looks up a localized string similar to An error has occurred!
+        ///Please contact the developer.
         ///---
         ///{0}.
         /// </summary>
@@ -72,8 +72,8 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отсутствует доступ в интернет!
-        ///Дальнейшая работа программы невозможна..
+        ///   Looks up a localized string similar to No internet connection available!
+        ///Further operation of the application is impossible..
         /// </summary>
         public static string mw_alert_internet_unavailable {
             get {
@@ -82,7 +82,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Операция отменена.
+        ///   Looks up a localized string similar to Operation cancelled.
         /// </summary>
         public static string mw_alert_operation_cancelled {
             get {
@@ -145,7 +145,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Пожалуйста, подождите....
+        ///   Looks up a localized string similar to Please wait....
         /// </summary>
         public static string mw_common_wait {
             get {
@@ -154,7 +154,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отмена текущей операции... Пожалуйста, подождите....
+        ///   Looks up a localized string similar to Cancelling current operation... Please wait....
         /// </summary>
         public static string mw_progress_title_cancelling {
             get {
@@ -163,7 +163,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Загрузка {0} ({1} % \ {2} из {3}, {4}/s \ {5}).
+        ///   Looks up a localized string similar to Downloading {0} ({1}% \ {2} of {3}, {4}/s \ {5}).
         /// </summary>
         public static string mw_progress_title_download {
             get {
@@ -172,7 +172,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Финализация....
+        ///   Looks up a localized string similar to Finalizing....
         /// </summary>
         public static string mw_progress_title_finalization {
             get {
@@ -181,7 +181,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Проверка {0}.
+        ///   Looks up a localized string similar to Verifying {0}.
         /// </summary>
         public static string mw_progress_title_hash {
             get {
@@ -190,7 +190,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Актуальная версия {0}; Потребуется места: {1}.
+        ///   Looks up a localized string similar to Latest version {0}; Required space: {1}.
         /// </summary>
         public static string mw_progress_title_install_available {
             get {
@@ -199,7 +199,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Наслаждайтесь!.
+        ///   Looks up a localized string similar to Enjoy!.
         /// </summary>
         public static string mw_progress_title_play_available {
             get {
@@ -208,7 +208,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Распаковка {0} ({1} %).
+        ///   Looks up a localized string similar to Unpacking {0} ({1}%).
         /// </summary>
         public static string mw_progress_title_unpack {
             get {
@@ -217,7 +217,7 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Доступно обновление! {0} =&gt; {1}.
+        ///   Looks up a localized string similar to Update available! {0} =&gt; {1}.
         /// </summary>
         public static string mw_progress_title_update_available {
             get {
@@ -226,8 +226,8 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Отсутствует доступ в интернет!
-        ///Дальнейшая работа программы невозможна..
+        ///   Looks up a localized string similar to No internet connection available!
+        ///Further operation of the application is impossible..
         /// </summary>
         public static string throw_internet_unavailable {
             get {

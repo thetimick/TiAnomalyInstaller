@@ -76,4 +76,8 @@
 ---
 {0}</value>
     </data>
+    <data name="mw_alert_internet_unavailable" xml:space="preserve">
+        <value>Отсутствует доступ в интернет!
+Дальнейшая работа программы невозможна.</value>
+    </data>
 </root>
