@@ -10,13 +10,13 @@ size:
   install_bytes: 26446854973
 archives:
   install:
-    - url: https://drive.google.com/file/d/1Opa203d4v_LU1Nc2yzVZFz49HXr0BSbj/view?usp=sharing
+    - url: https://drive.google.com/file/d/1Cxky-WySUOS_wbyEgeFPHy2MC6KRJsAl/view?usp=sharing
       file_name: archive_drive.7z
       extract_to_folder: Vanilla
       version: 1.0.0
       checksum:
         algorithm: MD5
-        value: 15A87D6FA12A20027365395C8B3A923E
+        value: 457437597112F9D181795E2AA07FA660
     - url: https://disk.yandex.ru/d/KxZEKMAOXPgcTA
       file_name: archive_yandex.7z
       extract_to_folder: Organizer
