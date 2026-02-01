@@ -133,50 +133,77 @@
     <value>Cancel</value>
   </data>
   <data name="mw_progress_title_play_available" xml:space="preserve">
-    <value>Наслаждайтесь!</value>
+    <value>Enjoy!</value>
   </data>
   <data name="mw_progress_title_update_available" xml:space="preserve">
-    <value>Доступно обновление! {0} =&gt; {1}</value>
+    <value>Update available! {0} =&gt; {1}</value>
   </data>
   <data name="mw_progress_title_install_available" xml:space="preserve">
-    <value>Актуальная версия {0}; Потребуется места: {1}</value>
+    <value>Latest version {0}; Required space: {1}</value>
   </data>
   <data name="mw_common_wait" xml:space="preserve">
-    <value>Пожалуйста, подождите...</value>
+    <value>Please wait...</value>
   </data>
   <data name="mw_alert_operation_cancelled" xml:space="preserve">
-    <value>Операция отменена</value>
+    <value>Operation cancelled</value>
   </data>
   <data name="mw_progress_title_hash" xml:space="preserve">
-    <value>Проверка {0}</value>
+    <value>Verifying {0}</value>
   </data>
   <data name="mw_progress_title_unpack" xml:space="preserve">
-    <value>Распаковка {0} ({1} %)</value>
+    <value>Unpacking {0} ({1}%)</value>
   </data>
   <data name="mw_progress_title_download" xml:space="preserve">
-    <value>Загрузка {0} ({1} % \ {2} из {3}, {4}/s \ {5})</value>
+    <value>Downloading {0} ({1}% \ {2} of {3}, {4}/s \ {5})</value>
   </data>
   <data name="mw_progress_title_finalization" xml:space="preserve">
-    <value>Финализация...</value>
+    <value>Finalizing...</value>
   </data>
   <data name="mw_button_settings" xml:space="preserve">
     <value>Settings</value>
   </data>
   <data name="mw_progress_title_cancelling" xml:space="preserve">
-    <value>Отмена текущей операции... Пожалуйста, подождите...</value>
+    <value>Cancelling current operation... Please wait...</value>
   </data>
   <data name="throw_internet_unavailable" xml:space="preserve">
-    <value>Отсутствует доступ в интернет!
-Дальнейшая работа программы невозможна.</value>
+    <value>No internet connection available!
+Further operation of the application is impossible.</value>
   </data>
   <data name="mw_alert_internet_unavailable" xml:space="preserve">
-    <value>Отсутствует доступ в интернет!
-Дальнейшая работа программы невозможна.</value>
+    <value>No internet connection available!
+Further operation of the application is impossible.</value>
   </data>
   <data name="mw_alert_error" xml:space="preserve">
-    <value>Произошла ошибка!
-Пожалуйста, обратитесь к разработчику.
+    <value>An error has occurred!
+Please contact the developer.
 ---
 {0}</value>
+  </data>
+  <data name="mw_alert_question_delete" xml:space="preserve">
+    <value>Вы действительно этого хотите?</value>
+  </data>
+  <data name="mw_additionally_create_shortcut_on_desktop" xml:space="preserve">
+    <value>Добавить Ярлык на Рабочий Стол</value>
+  </data>
+  <data name="mw_additionally_open_folder_vanilla" xml:space="preserve">
+    <value>Открыть папку Vanilla</value>
+  </data>
+  <data name="mw_additionally_open_folder_organizer" xml:space="preserve">
+    <value>Открыть папку Organizer</value>
+  </data>
+  <data name="mw_additionally_open_folder_storage" xml:space="preserve">
+    <value>Открыть папку Storage</value>
+  </data>
+  <data name="mw_additionally_open_file_log" xml:space="preserve">
+    <value>Открыть Лог-Файл</value>
+  </data>
+  <data name="mw_additionally_delete_game" xml:space="preserve">
+    <value>Удалить Игру</value>
+  </data>
+  <data name="mw_additionally_delete_archives" xml:space="preserve">
+    <value>Удалить Архивы</value>
+  </data>
+  <data name="mw_additionally_delete_all" xml:space="preserve">
+    <value>Удалить Все</value>
   </data>
 </root>

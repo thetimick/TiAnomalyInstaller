@@ -18,7 +18,6 @@ namespace TiAnomalyInstaller.Logic.Services;
 /// </summary>
 public class StorageServiceKey: SmartEnum<StorageServiceKey>
 {
-    public static readonly StorageServiceKey Profile = new(nameof(Profile), 0);
     public static readonly StorageServiceKey ProfileUrl = new(nameof(ProfileUrl), 0);
     public static readonly StorageServiceKey Version = new(nameof(Version), 1);
 

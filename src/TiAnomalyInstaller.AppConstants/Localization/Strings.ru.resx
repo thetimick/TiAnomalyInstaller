@@ -76,4 +76,35 @@
 ---
 {0}</value>
     </data>
+    <data name="mw_alert_internet_unavailable" xml:space="preserve">
+        <value>Отсутствует доступ в интернет!
+Дальнейшая работа программы невозможна.</value>
+    </data>
+    <data name="mw_alert_question_delete" xml:space="preserve">
+        <value>Вы действительно этого хотите?</value>
+    </data>
+    <data name="mw_additionally_create_shortcut_on_desktop" xml:space="preserve">
+        <value>Добавить Ярлык на Рабочий Стол</value>
+    </data>
+    <data name="mw_additionally_open_file_log" xml:space="preserve">
+        <value>Открыть Лог-Файл</value>
+    </data>
+    <data name="mw_additionally_open_folder_organizer" xml:space="preserve">
+        <value>Открыть папку Organizer</value>
+    </data>
+    <data name="mw_additionally_open_folder_storage" xml:space="preserve">
+        <value>Открыть папку Storage</value>
+    </data>
+    <data name="mw_additionally_open_folder_vanilla" xml:space="preserve">
+        <value>Открыть папку Vanilla</value>
+    </data>
+    <data name="mw_additionally_delete_all" xml:space="preserve">
+        <value>Удалить Все</value>
+    </data>
+    <data name="mw_additionally_delete_archives" xml:space="preserve">
+        <value>Удалить Архивы</value>
+    </data>
+    <data name="mw_additionally_delete_game" xml:space="preserve">
+        <value>Удалить Игру</value>
+    </data>
 </root>

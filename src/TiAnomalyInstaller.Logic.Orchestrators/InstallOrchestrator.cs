@@ -15,6 +15,8 @@ using TiAnomalyInstaller.Logic.Orchestrators.Components;
 using TiAnomalyInstaller.Logic.Orchestrators.Entities;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
+using TiAnomalyInstaller.Logic.Services.Services;
+using TiAnomalyInstaller.Logic.Services.Services.SevenZip;
 using Version = SemanticVersioning.Version;
 
 namespace TiAnomalyInstaller.Logic.Orchestrators;
@@ -25,6 +27,7 @@ public partial class InstallOrchestrator(
     IStorageService storageService,
     IConfigService configService,
     IHashCheckerService hashCheckerService,
+    ISevenZipService sevenZipService,
     IOrganizerService organizerService,
     ITransferService transferService,
     ILogger<InstallOrchestrator> logger,
@@ -73,7 +76,7 @@ public partial class InstallOrchestrator(
         Handler?.Invoke(this, new InstallEventArgs {
             Type = InstallEventArgs.InstallType.Merge,
             Identifier = "0",
-            Title = "Финализация...",
+            Title = Strings.mw_progress_title_finalization,
             IsIndeterminate = true
         });
         
@@ -96,28 +99,24 @@ public partial class InstallOrchestrator
         var rawCurrentVersion = storageService.GetString(StorageServiceKey.Version);
         var rawLatestVersion = config.Archives.Version;
         
-        // Какая-то ошибка в конфиге
         if (!Version.TryParse(rawLatestVersion, out var latestVersion))
         {
-            logger.LogInformation("Какая-то ошибка в конфиге");
+            logger.LogInformation("Some error in the config");
             return [];
         }
-        
-        // Чистая установка
+
         if (!Version.TryParse(rawCurrentVersion, out var currentVersion))
         {
-            logger.LogInformation("Чистая установка");
+            logger.LogInformation("Clean installation");
             return config.Archives.Install.Concat(config.Archives.Patch).ToList();
         }
-        
-        // Версии равны - выходим, но... Как мы тут оказались?
+
         if (currentVersion == latestVersion)
         {
-            logger.LogInformation("Версии равны - выходим, но... Как мы тут оказались?");
+            logger.LogInformation("Versions are equal — exiting, but... how did we even get here?");
             return [];
         }
         
-        // Версии не равны - обновление
         var install = config.Archives.Install
             .Where(entity => {
                 if (!Version.TryParse(entity.Version, out var version))
@@ -200,25 +199,23 @@ public partial class InstallOrchestrator
     {
         var fileName = Path.Combine(Constants.StorageDownloadFolder, archive.FileName);
         var directory = Path.Combine(Constants.StorageDownloadFolder, Path.GetFileNameWithoutExtension(archive.FileName));
-
+        
         if (!File.Exists(fileName))
             throw new FileNotFoundException(fileName);
         
-        var service = provider.GetRequiredService<ISevenZipService>();
-        service.Handler = new Progress<byte>(InternalHandler);
-        await service.ToFolderAsync(fileName, directory, token);
-        
-        return;
-
-        void InternalHandler(byte progress)
-        {
-            Handler?.Invoke(this, new InstallEventArgs {
-                Type = InstallEventArgs.InstallType.Unpack,
-                Identifier = archive.Checksum.Value,
-                Title = string.Format(Strings.mw_progress_title_unpack, archive.FileName, progress),
-                Value = progress
-            });
-        }
+        await sevenZipService.ToFolderAsync(
+            fileName, 
+            directory,
+            new Progress<byte>(value => {
+                Handler?.Invoke(this, new InstallEventArgs {
+                    Type = InstallEventArgs.InstallType.Unpack,
+                    Identifier = archive.Checksum.Value,
+                    Title = string.Format(Strings.mw_progress_title_unpack, archive.FileName, value),
+                    Value = value
+                });
+            }), 
+            token
+        );
     }
 
     private async Task MergeAllContentAsync(List<RemoteConfigEntity.ArchiveItemEntity> archives, CancellationToken token)
@@ -240,16 +237,9 @@ public partial class InstallOrchestrator
 {
     private static void Initial(RemoteConfigEntity config)
     {
-        if (ArchiveListIsEmpty(config))
-            throw new ArchiveListIsEmptyException();
         if (FreeSpaceIsNotAvailable(config))
             throw new FreeSpaceIsNotAvailableException();
     }
-    
-    private static bool ArchiveListIsEmpty(RemoteConfigEntity config)
-    {
-        return config.Archives.Install.Count == 0;
-    } 
     
     private static bool FreeSpaceIsNotAvailable(RemoteConfigEntity config)
     {
@@ -273,10 +263,6 @@ public partial class InstallOrchestrator
 
 public partial class InstallOrchestrator
 {
-    public class ArchiveListIsEmptyException(
-        string message = "Archive list is empty."
-    ) : Exception(message);
-
     public class FreeSpaceIsNotAvailableException(
         string message = "Not enough free disk space."
     ) : Exception(message);

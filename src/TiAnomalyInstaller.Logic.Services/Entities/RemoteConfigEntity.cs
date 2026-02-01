@@ -6,7 +6,9 @@
 // ⠀
 
 using System.Text.Json.Serialization;
+using YamlDotNet.Serialization;
 
+// ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
@@ -34,7 +36,7 @@ public sealed partial record RemoteConfigEntity
     
     public sealed record VisualEntity
     {
-        public string? BackgroundImage { get; init; } = null!;
+        public string? BackgroundImage { get; init; }
     }
     
     public sealed record SizeInfoEntity
@@ -42,16 +44,17 @@ public sealed partial record RemoteConfigEntity
         public long DownloadBytes { get; init; }
         public long InstallBytes { get; init; }
         
+        [YamlIgnore]
         public long OverallBytes => DownloadBytes + InstallBytes;
     }
 
     public sealed record ArchiveEntity
     {
-        public List<ArchiveItemEntity> Install { get; init; } = null!;
-        public List<ArchiveItemEntity> Patch { get; init; } = null!;
+        public List<ArchiveItemEntity> Install { get; init; } = [];
+        public List<ArchiveItemEntity> Patch { get; init; } = [];
 
-        [JsonIgnore]
-        public string? Version => Patch.Last().Patch?.ToVersion ?? Install.Last().Version;
+        [YamlIgnore]
+        public string? Version => Patch.LastOrDefault()?.Patch?.ToVersion ?? Install.LastOrDefault()?.Version;
     }
     
     public sealed partial record ArchiveItemEntity

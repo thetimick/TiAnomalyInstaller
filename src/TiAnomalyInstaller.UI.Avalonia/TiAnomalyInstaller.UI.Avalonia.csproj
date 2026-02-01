@@ -17,10 +17,6 @@
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.3.11" />
         <PackageReference Include="Avalonia.Desktop" Version="11.3.11" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.11">
-            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-        </PackageReference>
         <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.11" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.5.0" />
         <PackageReference Include="FluentIcons.Avalonia" Version="2.0.317" />
@@ -39,6 +35,10 @@
         <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.0-beta2" />
+    </ItemGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\TiAnomalyInstaller.Logic.Orchestrators\TiAnomalyInstaller.Logic.Orchestrators.csproj" />
       <ProjectReference Include="..\TiAnomalyInstaller.Logic.Services\TiAnomalyInstaller.Logic.Services.csproj" />

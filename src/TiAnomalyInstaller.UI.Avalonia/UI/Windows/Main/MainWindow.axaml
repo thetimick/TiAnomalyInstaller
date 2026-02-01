@@ -2,7 +2,9 @@
     x:Class="TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:TiAnomalyInstaller.UI.Avalonia.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fControls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
     xmlns:icons="clr-namespace:FluentIcons.Avalonia;assembly=FluentIcons.Avalonia"
     xmlns:loc="clr-namespace:TiAnomalyInstaller.AppConstants.Localization;assembly=TiAnomalyInstaller.AppConstants"
     xmlns:markup="clr-namespace:FluentIcons.Avalonia.Markup;assembly=FluentIcons.Avalonia"
@@ -42,40 +44,76 @@
             <MenuItem
                 Command="{Binding TapOnCreateShortcutMenuButtonCommand}"
                 CommandParameter="{x:Static vm:MainWindowViewModel+ShortcutType.Desktop}"
-                Header="Ярлык на Рабочий Стол" />
+                Header="{x:Static loc:Strings.mw_additionally_create_shortcut_on_desktop}"
+                Icon="{markup:SymbolIcon Symbol=Add,
+                                         FontSize=12}" />
         </MenuFlyout>
 
         <MenuFlyout x:Key="OpenFolderMenuFlyout" Placement="Top">
             <MenuItem
                 Command="{Binding TapOnOpenFolderMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+FolderType.Vanilla}"
-                Header="Открыть Vanilla" />
+                CommandParameter="{x:Static vm:MainWindowViewModel+OpenType.Vanilla}"
+                Header="{x:Static loc:Strings.mw_additionally_open_folder_vanilla}"
+                Icon="{markup:SymbolIcon Symbol=OpenFolder,
+                                         FontSize=12}" />
+
             <MenuItem
                 Command="{Binding TapOnOpenFolderMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+FolderType.Organizer}"
-                Header="Открыть Organizer" />
+                CommandParameter="{x:Static vm:MainWindowViewModel+OpenType.Organizer}"
+                Header="{x:Static loc:Strings.mw_additionally_open_folder_organizer}"
+                Icon="{markup:SymbolIcon Symbol=OpenFolder,
+                                         FontSize=12}" />
+
+            <MenuItem
+                Command="{Binding TapOnOpenFolderMenuButtonCommand}"
+                CommandParameter="{x:Static vm:MainWindowViewModel+OpenType.Storage}"
+                Header="{x:Static loc:Strings.mw_additionally_open_folder_storage}"
+                Icon="{markup:SymbolIcon Symbol=OpenFolder,
+                                         FontSize=12}" />
+
             <Separator />
+
             <MenuItem
                 Command="{Binding TapOnOpenFolderMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+FolderType.Storage}"
-                Header="Открыть Storage" />
+                CommandParameter="{x:Static vm:MainWindowViewModel+OpenType.Log}"
+                Header="{x:Static loc:Strings.mw_additionally_open_file_log}"
+                Icon="{markup:SymbolIcon Symbol=Open,
+                                         FontSize=12}" />
         </MenuFlyout>
 
         <MenuFlyout x:Key="DeleteMenuFlyout" Placement="Top">
             <MenuItem
                 Command="{Binding TapOnDeleteMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Game}"
-                Header="Удалить Игру" />
+                CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Archives}"
+                Header="{x:Static loc:Strings.mw_additionally_delete_archives}"
+                Icon="{markup:SymbolIcon Symbol=Delete,
+                                         FontSize=12}" />
+
             <MenuItem
                 Command="{Binding TapOnDeleteMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Archives}"
-                Header="Удалить Архивы" />
+                CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Game}"
+                Foreground="Red"
+                Header="{x:Static loc:Strings.mw_additionally_delete_game}"
+                Icon="{markup:SymbolIcon Symbol=Delete,
+                                         FontSize=12}"
+                IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
+
+            <Separator IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
+
+            <MenuItem
+                Command="{Binding TapOnDeleteMenuButtonCommand}"
+                CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.All}"
+                Foreground="Red"
+                Header="{x:Static loc:Strings.mw_additionally_delete_all}"
+                Icon="{markup:SymbolIcon Symbol=Delete,
+                                         FontSize=12}"
+                IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
         </MenuFlyout>
 
         <Flyout x:Key="AboutFlyout" Placement="TopEdgeAlignedRight">
             <Grid
                 MaxWidth="256"
-                RowDefinitions="Auto, Auto, Auto"
+                RowDefinitions="Auto"
                 RowSpacing="8">
 
                 <Grid
@@ -99,12 +137,6 @@
                             TextWrapping="WrapWithOverflow" />
                     </StackPanel>
                 </Grid>
-
-                <Separator Grid.Row="1" />
-
-                <StackPanel Grid.Row="2">
-                    <TextBlock Text="Тут появится ссылка на автора" />
-                </StackPanel>
             </Grid>
         </Flyout>
     </Window.Resources>
@@ -129,7 +161,7 @@
         <Panel
             Grid.Row="0"
             Grid.Column="1"
-            Margin="32,32,32,24">
+            Margin="32,32,32,0">
 
             <Border
                 Background="Black"
@@ -142,7 +174,7 @@
             </Border>
 
             <Grid Margin="8" RowDefinitions="Auto, *, Auto">
-                <Viewbox Grid.Row="0">
+                <Viewbox Grid.Row="0" IsVisible="{Binding ViewModelType, Converter={StaticResource ViewStateTypeToBoolConverter}}">
                     <TextBlock
                         x:Name="TitleTextBlock"
                         Padding="32,4,32,0"
@@ -159,74 +191,77 @@
                     </TextBlock>
                 </Viewbox>
 
-                <Grid
+                <fControls:ProgressRing
+                    Grid.Row="0"
+                    Grid.RowSpan="3"
+                    IsVisible="{Binding ViewModelType, Converter={StaticResource ViewStateTypeToBoolConverter}, ConverterParameter={x:Static converters:ViewStateTypeToBoolConverter+ConverterType.Invert}}" />
+
+                <StackPanel
+                    Grid.Row="1"
+                    Width="220"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Row="1">
+                    IsVisible="{Binding ViewModelType, Converter={StaticResource ViewStateTypeToBoolConverter}}"
+                    Orientation="Vertical"
+                    Spacing="8">
 
-                    <StackPanel
-                        Width="220"
-                        Orientation="Vertical"
-                        Spacing="8">
+                    <!--  Играть  -->
+                    <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        Classes="accent Anomaly"
+                        Command="{Binding TapOnPlayButtonCommand}">
 
-                        <!--  Играть  -->
-                        <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
-                        <Button
-                            HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Stretch"
-                            Classes="accent Anomaly"
-                            Command="{Binding TapOnPlayButtonCommand}">
+                        <Grid ColumnDefinitions="Auto, *">
+                            <icons:SymbolIcon
+                                Grid.Column="0"
+                                FontSize="18"
+                                Symbol="Play" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="{x:Static loc:Strings.mw_button_play}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </Button>
 
-                            <Grid ColumnDefinitions="Auto, *">
-                                <icons:SymbolIcon
-                                    Grid.Column="0"
-                                    FontSize="18"
-                                    Symbol="Play" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Text="{x:Static loc:Strings.mw_button_play}"
-                                    TextAlignment="Center" />
-                            </Grid>
-                        </Button>
+                    <!--  Установить  -->
+                    <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
+                    <Button
+                        HorizontalContentAlignment="Stretch"
+                        Classes="accent Anomaly"
+                        Command="{Binding TapOnInstallButtonCommand}">
 
-                        <!--  Установить  -->
-                        <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
-                        <Button
-                            HorizontalContentAlignment="Stretch"
-                            Classes="accent Anomaly"
-                            Command="{Binding TapOnInstallButtonCommand}">
+                        <Grid ColumnDefinitions="Auto, *">
+                            <icons:SymbolIcon
+                                Grid.Column="0"
+                                FontSize="18"
+                                Symbol="ArrowDownload" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="{Binding InstallButtonTitle}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </Button>
 
-                            <Grid ColumnDefinitions="Auto, *">
-                                <icons:SymbolIcon
-                                    Grid.Column="0"
-                                    FontSize="18"
-                                    Symbol="ArrowDownload" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Text="{Binding InstallButtonTitle}"
-                                    TextAlignment="Center" />
-                            </Grid>
-                        </Button>
+                    <!--  Выход  -->
+                    <Button
+                        HorizontalContentAlignment="Stretch"
+                        Classes="Anomaly"
+                        Command="{Binding TapOnCloseButtonCommand}">
 
-                        <!--  Выход  -->
-                        <Button
-                            HorizontalContentAlignment="Stretch"
-                            Classes="Anomaly"
-                            Command="{Binding TapOnCloseButtonCommand}">
-
-                            <Grid ColumnDefinitions="Auto, *">
-                                <icons:SymbolIcon
-                                    Grid.Column="0"
-                                    FontSize="18"
-                                    Symbol="ArrowExit" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Text="{Binding CancelButtonTitle}"
-                                    TextAlignment="Center" />
-                            </Grid>
-                        </Button>
-                    </StackPanel>
-                </Grid>
+                        <Grid ColumnDefinitions="Auto, *">
+                            <icons:SymbolIcon
+                                Grid.Column="0"
+                                FontSize="18"
+                                Symbol="ArrowExit" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Text="{Binding CancelButtonTitle}"
+                                TextAlignment="Center" />
+                        </Grid>
+                    </Button>
+                </StackPanel>
 
                 <StackPanel
                     Grid.Row="2"
@@ -276,7 +311,17 @@
             Grid.Row="1"
             Grid.Column="1"
             Margin="32,0,32,32"
-            IsVisible="False">
+            IsEnabled="{Binding AdditionallyPanelIsEnabled}">
+
+            <Border
+                Background="Black"
+                CornerRadius="16"
+                Opacity="0.8">
+
+                <Border.Effect>
+                    <BlurEffect Radius="4" />
+                </Border.Effect>
+            </Border>
 
             <Grid Margin="20" ColumnDefinitions="*, Auto">
                 <StackPanel
@@ -308,6 +353,7 @@
 
                 <StackPanel
                     Grid.Column="1"
+                    IsVisible="False"
                     Orientation="Horizontal"
                     Spacing="8">
 
@@ -315,8 +361,7 @@
                         Padding="12"
                         Content="{markup:SymbolIcon Symbol=Settings,
                                                     FontSize=14}"
-                        CornerRadius="24"
-                        IsVisible="False" />
+                        CornerRadius="24" />
 
                     <Button
                         Padding="12"
