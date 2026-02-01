@@ -17,11 +17,28 @@ namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
 public partial class MainWindowViewModel
 {
+    public async Task<ButtonResult> ShowQuestionOnMainAsync(string message)
+    {
+        return await Dispatcher.UIThread.InvokeAsync(async () => await ShowQuestionAsync(message));
+    }
+    
+    public async Task<ButtonResult> ShowQuestionAsync(string message)
+    {
+        if (_lifetime?.MainWindow is not { } window)
+            return ButtonResult.None;
+        return await MessageBoxManager
+            .GetMessageBoxStandard(
+                string.Empty,
+                message,
+                ButtonEnum.YesNo,
+                Icon.Question
+            )
+            .ShowAsPopupAsync(window);
+    } 
+    
     public async Task ShowInfoOnMainAsync(string message)
     {
-        await Dispatcher.UIThread.InvokeAsync(async () => {
-            await ShowInfoAsync(message);
-        });
+        await Dispatcher.UIThread.InvokeAsync(async () => await ShowInfoAsync(message));
     }
     
     private async Task ShowInfoAsync(string message)

@@ -24,16 +24,18 @@ public partial class MainWindowViewModel
         Desktop
     }
     
-    public enum FolderType
+    public enum OpenType
     {
         Vanilla,
         Organizer,
-        Storage
+        Storage,
+        Log
     }
 
     public enum DeleteType
     {
         Game,
-        Archives
+        Archives,
+        All
     }
 }

@@ -60,6 +60,78 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Добавить Ярлык на Рабочий Стол.
+        /// </summary>
+        internal static string mw_additionally_create_shortcut_on_desktop {
+            get {
+                return ResourceManager.GetString("mw_additionally_create_shortcut_on_desktop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить Все.
+        /// </summary>
+        internal static string mw_additionally_delete_all {
+            get {
+                return ResourceManager.GetString("mw_additionally_delete_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить Архивы.
+        /// </summary>
+        internal static string mw_additionally_delete_archives {
+            get {
+                return ResourceManager.GetString("mw_additionally_delete_archives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Удалить Игру.
+        /// </summary>
+        internal static string mw_additionally_delete_game {
+            get {
+                return ResourceManager.GetString("mw_additionally_delete_game", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открыть Лог-Файл.
+        /// </summary>
+        internal static string mw_additionally_open_file_log {
+            get {
+                return ResourceManager.GetString("mw_additionally_open_file_log", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открыть папку Organizer.
+        /// </summary>
+        internal static string mw_additionally_open_folder_organizer {
+            get {
+                return ResourceManager.GetString("mw_additionally_open_folder_organizer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открыть папку Storage.
+        /// </summary>
+        internal static string mw_additionally_open_folder_storage {
+            get {
+                return ResourceManager.GetString("mw_additionally_open_folder_storage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Открыть папку Vanilla.
+        /// </summary>
+        internal static string mw_additionally_open_folder_vanilla {
+            get {
+                return ResourceManager.GetString("mw_additionally_open_folder_vanilla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Произошла ошибка!
         ///Пожалуйста, обратитесь к разработчику.
         ///---
@@ -87,6 +159,15 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         internal static string mw_alert_operation_cancelled {
             get {
                 return ResourceManager.GetString("mw_alert_operation_cancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Вы действительно этого хотите?.
+        /// </summary>
+        internal static string mw_alert_question_delete {
+            get {
+                return ResourceManager.GetString("mw_alert_question_delete", resourceCulture);
             }
         }
         

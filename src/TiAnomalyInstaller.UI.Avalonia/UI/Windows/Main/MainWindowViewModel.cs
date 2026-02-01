@@ -20,12 +20,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Humanizer;
 using Microsoft.Extensions.Logging;
+using MsBox.Avalonia.Enums;
 using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.AppConstants.Localization;
 using TiAnomalyInstaller.Logic.Orchestrators;
 using TiAnomalyInstaller.Logic.Orchestrators.Entities;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
+using TiAnomalyInstaller.Logic.Services.Services;
 using TiAnomalyInstaller.UI.Avalonia.Extensions;
 using TiAnomalyInstaller.UI.Avalonia.Resources;
 
@@ -37,6 +39,7 @@ public partial class MainWindowViewModel(
     IInMemoryStorageService inMemoryStorageService,
     IPlayingService playingService,
     IWatcherService watcherService,
+    ICleanupService cleanupService,
     IPlayOrchestrator playOrchestrator,
     IInstallOrchestrator installOrchestrator,
     ILogger<MainWindowViewModel> logger
@@ -225,27 +228,49 @@ public partial class MainWindowViewModel(
     { }
     
     [RelayCommand]
-    private void TapOnOpenFolderMenuButton(FolderType folder)
+    private void TapOnOpenFolderMenuButton(OpenType open)
     {
-        switch (folder)
+        switch (open)
         {
-            case FolderType.Vanilla:
+            case OpenType.Vanilla:
                 Process.Start("explorer.exe", Constants.VanillaFolderName);
             break;
-            case FolderType.Organizer:
+            case OpenType.Organizer:
                 Process.Start("explorer.exe", Constants.OrganizerFolderName);
             break;
-            case FolderType.Storage:
+            case OpenType.Storage:
                 Process.Start("explorer.exe", Constants.StorageFolder);
             break;
+            case OpenType.Log:
+                Process.Start("explorer.exe", Constants.Files.LogFileName);
+            break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(folder), folder, null);
+                throw new ArgumentOutOfRangeException(nameof(open), open, null);
         }
     }
-    
+
     [RelayCommand]
-    private void TapOnDeleteMenuButton(DeleteType type)
-    { }
+    private async Task TapOnDeleteMenuButton(DeleteType type)
+    {
+        if (await ShowQuestionAsync(Strings.mw_alert_question_delete) != ButtonResult.Yes)
+            return;
+        
+        switch (type)
+        {
+            case DeleteType.Game:
+                cleanupService.RemoveGame();
+            break;
+            case DeleteType.Archives:
+                cleanupService.RemoveArchives();
+            break;
+            case DeleteType.All:
+                cleanupService.RemoveGame();
+                cleanupService.RemoveArchives();
+            break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
     
     [RelayCommand(CanExecute = nameof(IsCancelButtonEnabled))]
     private async Task TapOnCloseButton()
@@ -272,8 +297,8 @@ public partial class MainWindowViewModel
 {
     private void SetupWatcherService()
     {
-        watcherService.FolderAppeared += (_, _) => Dispatcher.UIThread.Invoke(UpdateTitles);
-        watcherService.FolderDisappeared += (_, _) => Dispatcher.UIThread.Invoke(UpdateTitles);
+        watcherService.FolderAppeared += (_, _) => Dispatcher.UIThread.Invoke(() => UpdateViewModelType());
+        watcherService.FolderDisappeared += (_, _) => Dispatcher.UIThread.Invoke(() => UpdateViewModelType());
         watcherService.Start(
             Constants.CurrentDirectory,
             Constants.Vanilla, Constants.Organizer

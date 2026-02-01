@@ -15,6 +15,8 @@ using TiAnomalyInstaller.Logic.Orchestrators.Components;
 using TiAnomalyInstaller.Logic.Orchestrators.Entities;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
+using TiAnomalyInstaller.Logic.Services.Services;
+using TiAnomalyInstaller.Logic.Services.Services.SevenZip;
 using Version = SemanticVersioning.Version;
 
 namespace TiAnomalyInstaller.Logic.Orchestrators;
@@ -25,6 +27,7 @@ public partial class InstallOrchestrator(
     IStorageService storageService,
     IConfigService configService,
     IHashCheckerService hashCheckerService,
+    ISevenZipService sevenZipService,
     IOrganizerService organizerService,
     ITransferService transferService,
     ILogger<InstallOrchestrator> logger,
@@ -196,25 +199,23 @@ public partial class InstallOrchestrator
     {
         var fileName = Path.Combine(Constants.StorageDownloadFolder, archive.FileName);
         var directory = Path.Combine(Constants.StorageDownloadFolder, Path.GetFileNameWithoutExtension(archive.FileName));
-
+        
         if (!File.Exists(fileName))
             throw new FileNotFoundException(fileName);
         
-        var service = provider.GetRequiredService<ISevenZipService>();
-        service.Handler = new Progress<byte>(InternalHandler);
-        await service.ToFolderAsync(fileName, directory, token);
-        
-        return;
-
-        void InternalHandler(byte progress)
-        {
-            Handler?.Invoke(this, new InstallEventArgs {
-                Type = InstallEventArgs.InstallType.Unpack,
-                Identifier = archive.Checksum.Value,
-                Title = string.Format(Strings.mw_progress_title_unpack, archive.FileName, progress),
-                Value = progress
-            });
-        }
+        await sevenZipService.ToFolderAsync(
+            fileName, 
+            directory,
+            new Progress<byte>(value => {
+                Handler?.Invoke(this, new InstallEventArgs {
+                    Type = InstallEventArgs.InstallType.Unpack,
+                    Identifier = archive.Checksum.Value,
+                    Title = string.Format(Strings.mw_progress_title_unpack, archive.FileName, value),
+                    Value = value
+                });
+            }), 
+            token
+        );
     }
 
     private async Task MergeAllContentAsync(List<RemoteConfigEntity.ArchiveItemEntity> archives, CancellationToken token)

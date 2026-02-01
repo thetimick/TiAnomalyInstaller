@@ -12,6 +12,9 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        #if DEBUG
+        this.AttachDeveloperTools();
+        #endif
         
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
             var logger = Program.GetRequiredService<ILogger<App>>();
@@ -23,7 +26,7 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            desktop.MainWindow = Program.GetRequiredService<MainWindow>();;
+            desktop.MainWindow = Program.GetRequiredService<MainWindow>();
         base.OnFrameworkInitializationCompleted();
     }
 }

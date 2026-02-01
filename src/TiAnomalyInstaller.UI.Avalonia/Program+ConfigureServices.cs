@@ -13,6 +13,8 @@ using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Orchestrators;
 using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Providers;
+using TiAnomalyInstaller.Logic.Services.Services;
+using TiAnomalyInstaller.Logic.Services.Services.SevenZip;
 using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
 namespace TiAnomalyInstaller.UI.Avalonia;
@@ -49,10 +51,12 @@ public static partial class Program
         collection.AddSingleton<IWatcherService, WatcherService>();
         collection.AddSingleton<IStorageService, StorageService>(provider => new StorageService(Constants.StorageFolder, provider.GetRequiredService<ILogger<StorageService>>()));
         collection.AddSingleton<IInternetAvailabilityService, InternetAvailabilityService>();
+        collection.AddSingleton<ISharpSevenZipExtractorFactory, SharpSevenZipExtractorFactory>();
+        collection.AddSingleton<ISevenZipService, SevenZipService>();
+        collection.AddSingleton<ICleanupService, CleanupService>();
         
         collection.AddTransient<IDownloaderService, DownloaderService>();
-        collection.AddTransient<ISevenZipService, SevenZipService>();
-        
+
         // Providers
         collection.AddSingleton<IUrlProvider, UrlProvider>();
 
