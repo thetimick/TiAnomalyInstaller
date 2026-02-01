@@ -8,7 +8,6 @@
 using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using TiAnomalyInstaller.UI.Avalonia.Components;
 using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
 
 namespace TiAnomalyInstaller.UI.Avalonia.Converters;

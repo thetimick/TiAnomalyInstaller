@@ -6,13 +6,9 @@
 // ⠀
 
 using System.ComponentModel;
-using System.Net;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 using DebounceThrottle;
 using Downloader;
 using Microsoft.Extensions.Logging;
-using TiAnomalyInstaller.AppConstants;
 using TiAnomalyInstaller.Logic.Services.Entities;
 using TiAnomalyInstaller.Logic.Services.Providers;
 using DownloadProgressChangedEventArgs = Downloader.DownloadProgressChangedEventArgs;

@@ -15,7 +15,9 @@ using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Providers;
 using TiAnomalyInstaller.Logic.Services.Services;
 using TiAnomalyInstaller.Logic.Services.Services.SevenZip;
+using TiAnomalyInstaller.UI.Avalonia.UI.Pages;
 using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+using TiAnomalyInstaller.UI.Avalonia.ViewModels;
 
 namespace TiAnomalyInstaller.UI.Avalonia;
 
@@ -64,5 +66,8 @@ public static partial class Program
         
         collection.AddSingleton<MainWindow>();
         collection.AddSingleton<MainWindowViewModel>();
+
+        collection.AddSingleton<InitPage>();
+        collection.AddSingleton<InitPageViewModel>();
     }
 }
