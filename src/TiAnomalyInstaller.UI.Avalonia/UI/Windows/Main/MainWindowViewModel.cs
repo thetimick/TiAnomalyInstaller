@@ -8,6 +8,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,6 +41,7 @@ public partial class MainWindowViewModel(
     IPlayingService playingService,
     IWatcherService watcherService,
     ICleanupService cleanupService,
+    ILinkService linkService,
     IPlayOrchestrator playOrchestrator,
     IInstallOrchestrator installOrchestrator,
     ILogger<MainWindowViewModel> logger
@@ -225,7 +227,25 @@ public partial class MainWindowViewModel(
 
     [RelayCommand]
     private void TapOnCreateShortcutMenuButton(ShortcutType type)
-    { }
+    {
+        if (Environment.ProcessPath is not  { } file)
+            return;
+        
+        switch (type)
+        {
+            case ShortcutType.Desktop:
+                var lnk = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    $"S.T.A.L.K.E.R. Anomaly {_config.Metadata.Title}.lnk"
+                );
+                if (File.Exists(lnk))
+                    File.Delete(lnk);
+                linkService.Make(file, lnk);
+            break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
     
     [RelayCommand]
     private void TapOnOpenFolderMenuButton(OpenType open)

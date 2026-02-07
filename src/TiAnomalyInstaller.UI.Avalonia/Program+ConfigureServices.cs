@@ -56,6 +56,7 @@ public static partial class Program
         collection.AddSingleton<ISharpSevenZipExtractorFactory, SharpSevenZipExtractorFactory>();
         collection.AddSingleton<ISevenZipService, SevenZipService>();
         collection.AddSingleton<ICleanupService, CleanupService>();
+        collection.AddSingleton<ILinkService, LinkService>();
         
         collection.AddTransient<IDownloaderService, DownloaderService>();
 

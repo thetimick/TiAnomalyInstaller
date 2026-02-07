@@ -60,7 +60,16 @@ namespace TiAnomalyInstaller.AppConstants.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Добавить Ярлык на Рабочий Стол.
+        ///   Looks up a localized string similar to Добавить Ярлык.
+        /// </summary>
+        internal static string mw_additionally_create_shortcut {
+            get {
+                return ResourceManager.GetString("mw_additionally_create_shortcut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to На Рабочий Стол.
         /// </summary>
         internal static string mw_additionally_create_shortcut_on_desktop {
             get {

@@ -5,22 +5,33 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:TiAnomalyInstaller.UI.Avalonia.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="800"
+    d:DesignWidth="650"
     x:DataType="vm:InitPageViewModel"
     mc:Ignorable="d">
 
-    <Grid
-        Margin="16"
-        RowDefinitions="Auto, Auto, *"
-        RowSpacing="8">
+    <Panel Margin="32">
+        <Border
+            Background="Black"
+            CornerRadius="16"
+            Opacity="0.8">
+            <Border.Effect>
+                <BlurEffect Radius="4" />
+            </Border.Effect>
+        </Border>
 
-        <TextBox
-            Grid.Row="0"
-            Watermark="Ссылка на профиль" />
-        <Button
-            Grid.Row="1"
-            HorizontalAlignment="Right"
-            Content="Сохранить" />
-    </Grid>
+        <Grid RowDefinitions="Auto, *">
+            <Viewbox Grid.Row="0">
+                <TextBlock
+                    x:Name="TitleTextBlock"
+                    Padding="32,4,32,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{StaticResource AmazFont}"
+                    FontSize="32"
+                    Foreground="#DCDCDC"
+                    Text="Init"
+                    TextAlignment="Center" />
+            </Viewbox>
+        </Grid>
+    </Panel>
 </UserControl>

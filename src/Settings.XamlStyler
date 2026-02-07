@@ -1,7 +1,5 @@
 {
-    "IndentSize": 4,
-    "IndentWithTabs": false,
-    "AttributesTolerance": 1,
+    "AttributesTolerance": 2,
     "KeepFirstAttributeOnSameLine": false,
     "MaxAttributeCharactersPerLine": 0,
     "MaxAttributesPerLine": 1,
@@ -17,11 +15,9 @@
         "xmlns, xmlns:x",
         "xmlns:*",
         "x:Key, Key, x:Name, Name, x:Uid, Uid, Title",
-        "Classes",
         "Grid.Row, Grid.RowSpan, Grid.Column, Grid.ColumnSpan, Canvas.Left, Canvas.Top, Canvas.Right, Canvas.Bottom",
         "Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight",
         "Margin, Padding, HorizontalAlignment, VerticalAlignment, HorizontalContentAlignment, VerticalContentAlignment, Panel.ZIndex",
-        "IsEnabled, IsVisible, IsHitTestVisible",
         "*:*, *",
         "PageSource, PageIndex, Offset, Color, TargetName, Property, Value, StartPoint, EndPoint",
         "mc:Ignorable, d:IsDataSource, d:LayoutOverrides, d:IsStaticText",
@@ -36,11 +32,11 @@
     "ReorderVSM": 2,
     "ReorderGridChildren": false,
     "ReorderCanvasChildren": false,
-    "ReorderSetters": 1,
+    "ReorderSetters": 0,
     "FormatMarkupExtension": true,
     "NoNewLineMarkupExtensions": "x:Bind, Binding",
     "ThicknessSeparator": 2,
     "ThicknessAttributes": "Margin, Padding, BorderThickness, ThumbnailClipMargin",
     "FormatOnSave": true,
-    "CommentPadding": 2
+    "CommentPadding": 1
 }

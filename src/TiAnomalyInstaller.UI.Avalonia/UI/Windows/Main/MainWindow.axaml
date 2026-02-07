@@ -25,7 +25,7 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
-    <!--  Styles  -->
+    <!-- Styles -->
 
     <Window.Styles>
         <Style Selector="Button.Anomaly">
@@ -37,23 +37,21 @@
         </Style>
     </Window.Styles>
 
-    <!--  Resources  -->
+    <!-- Resources -->
 
     <Window.Resources>
-        <MenuFlyout
-            x:Key="ShortcutMenuFlyout"
-            Placement="Top">
-            <MenuItem
-                Command="{Binding TapOnCreateShortcutMenuButtonCommand}"
-                CommandParameter="{x:Static vm:MainWindowViewModel+ShortcutType.Desktop}"
-                Header="{x:Static loc:Strings.mw_additionally_create_shortcut_on_desktop}"
-                Icon="{markup:SymbolIcon Symbol=Add,
-                                         FontSize=12}" />
+        <MenuFlyout x:Key="ShortcutMenuFlyout" Placement="Top">
+            <MenuItem Header="{x:Static loc:Strings.mw_additionally_create_shortcut}">
+                <MenuItem
+                    Command="{Binding TapOnCreateShortcutMenuButtonCommand}"
+                    CommandParameter="{x:Static vm:MainWindowViewModel+ShortcutType.Desktop}"
+                    Header="{x:Static loc:Strings.mw_additionally_create_shortcut_on_desktop}"
+                    Icon="{markup:SymbolIcon Symbol=Add,
+                                             FontSize=12}" />
+            </MenuItem>
         </MenuFlyout>
 
-        <MenuFlyout
-            x:Key="OpenFolderMenuFlyout"
-            Placement="Top">
+        <MenuFlyout x:Key="OpenFolderMenuFlyout" Placement="Top">
             <MenuItem
                 Command="{Binding TapOnOpenFolderMenuButtonCommand}"
                 CommandParameter="{x:Static vm:MainWindowViewModel+OpenType.Vanilla}"
@@ -85,9 +83,7 @@
                                          FontSize=12}" />
         </MenuFlyout>
 
-        <MenuFlyout
-            x:Key="DeleteMenuFlyout"
-            Placement="Top">
+        <MenuFlyout x:Key="DeleteMenuFlyout" Placement="Top">
             <MenuItem
                 Command="{Binding TapOnDeleteMenuButtonCommand}"
                 CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Archives}"
@@ -96,30 +92,27 @@
                                          FontSize=12}" />
 
             <MenuItem
-                IsVisible="{Binding MenuItemDeleteGameIsVisible}"
                 Command="{Binding TapOnDeleteMenuButtonCommand}"
                 CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.Game}"
                 Foreground="Red"
                 Header="{x:Static loc:Strings.mw_additionally_delete_game}"
                 Icon="{markup:SymbolIcon Symbol=Delete,
-                                         FontSize=12}" />
+                                         FontSize=12}"
+                IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
 
             <Separator IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
 
             <MenuItem
-                IsVisible="{Binding MenuItemDeleteGameIsVisible}"
                 Command="{Binding TapOnDeleteMenuButtonCommand}"
                 CommandParameter="{x:Static vm:MainWindowViewModel+DeleteType.All}"
                 Foreground="Red"
                 Header="{x:Static loc:Strings.mw_additionally_delete_all}"
                 Icon="{markup:SymbolIcon Symbol=Delete,
-                                         FontSize=12}" />
+                                         FontSize=12}"
+                IsVisible="{Binding MenuItemDeleteGameIsVisible}" />
         </MenuFlyout>
 
-        <Flyout
-            x:Key="AboutFlyout"
-            Placement="TopEdgeAlignedRight">
-
+        <Flyout x:Key="AboutFlyout" Placement="TopEdgeAlignedRight">
             <Grid
                 MaxWidth="256"
                 RowDefinitions="Auto"
@@ -137,9 +130,7 @@
                         VerticalAlignment="Top"
                         Source="../../../Resources/Assets/icon.ico" />
 
-                    <StackPanel
-                        Grid.Column="1"
-                        Spacing="4">
+                    <StackPanel Grid.Column="1" Spacing="4">
 
                         <TextBlock Text="TiAvaloniaInstaller (v.0.1a)&#x0a;by the_timick" />
                         <TextBlock
@@ -153,7 +144,7 @@
         </Flyout>
     </Window.Resources>
 
-    <!--  UI  -->
+    <!-- UI -->
 
     <Grid
         ColumnDefinitions="*, 0.9*"
@@ -168,7 +159,7 @@
             Source="{Binding BackgroundImageFileName}"
             Stretch="UniformToFill" />
 
-        <!--  Основное меню  -->
+        <!-- Основное меню -->
 
         <Panel
             Grid.Row="0"
@@ -185,13 +176,8 @@
                 </Border.Effect>
             </Border>
 
-            <Grid
-                Margin="8"
-                RowDefinitions="Auto, *, Auto">
-
-                <Viewbox
-                    Grid.Row="0"
-                    IsVisible="{Binding ViewModelType, Converter={StaticResource ViewStateTypeToBoolConverter}}">
+            <Grid Margin="8" RowDefinitions="Auto, *, Auto">
+                <Viewbox Grid.Row="0" IsVisible="{Binding ViewModelType, Converter={StaticResource ViewStateTypeToBoolConverter}}">
                     <TextBlock
                         x:Name="TitleTextBlock"
                         Padding="32,4,32,0"
@@ -222,12 +208,12 @@
                     Orientation="Vertical"
                     Spacing="8">
 
-                    <!--  Играть  -->
-                    <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
+                    <!-- Играть -->
+                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                     <Button
-                        Classes="accent Anomaly"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Stretch"
+                        Classes="accent Anomaly"
                         Command="{Binding TapOnPlayButtonCommand}">
 
                         <Grid ColumnDefinitions="Auto, *">
@@ -242,11 +228,11 @@
                         </Grid>
                     </Button>
 
-                    <!--  Установить  -->
-                    <!--  ReSharper disable once Xaml.StyleClassNotFound  -->
+                    <!-- Установить -->
+                    <!-- ReSharper disable once Xaml.StyleClassNotFound -->
                     <Button
-                        Classes="accent Anomaly"
                         HorizontalContentAlignment="Stretch"
+                        Classes="accent Anomaly"
                         Command="{Binding TapOnInstallButtonCommand}">
 
                         <Grid ColumnDefinitions="Auto, *">
@@ -261,10 +247,10 @@
                         </Grid>
                     </Button>
 
-                    <!--  Выход  -->
+                    <!-- Выход -->
                     <Button
-                        Classes="Anomaly"
                         HorizontalContentAlignment="Stretch"
+                        Classes="Anomaly"
                         Command="{Binding TapOnCloseButtonCommand}">
 
                         <Grid ColumnDefinitions="Auto, *">
@@ -291,9 +277,7 @@
                         Foreground="#DCDCDC"
                         Text="{Binding MainProgressBarTitle}" />
 
-                    <ProgressBar
-                        Foreground="#DCDCDC"
-                        Value="100" />
+                    <ProgressBar Foreground="#DCDCDC" Value="100" />
                 </StackPanel>
 
                 <ItemsControl
@@ -303,9 +287,7 @@
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel
-                                Orientation="Vertical"
-                                Spacing="8" />
+                            <StackPanel Orientation="Vertical" Spacing="8" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
@@ -344,9 +326,7 @@
                 </Border.Effect>
             </Border>
 
-            <Grid
-                Margin="20"
-                ColumnDefinitions="*, Auto">
+            <Grid Margin="20" ColumnDefinitions="*, Auto">
                 <StackPanel
                     Grid.Column="0"
                     Orientation="Horizontal"
