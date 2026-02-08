@@ -1,15 +1,15 @@
 ﻿// ⠀
-// MainWindowViewModel+Enums.cs
+// MainPageViewModel+Enums.cs
 // TiAnomalyInstaller.UI.Avalonia
 // 
 // Created by the_timick on 22.01.2026.
 // ⠀
 
-namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+namespace TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages.MainPage;
 
-public partial class MainWindowViewModel
+public partial class MainPageViewModel
 {
-    public enum MainWindowViewModelType
+    public enum MainPageViewModelType
     {
         None,
         InstallAvailable,

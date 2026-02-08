@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Class="TiAnomalyInstaller.UI.Avalonia.UI.Pages.LoadingPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:fluent="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="850"
+    d:DesignWidth="750"
+    mc:Ignorable="d">
+
+    <Panel Margin="32">
+        <Border
+            Background="Black"
+            CornerRadius="16"
+            Opacity="0.8">
+
+            <Border.Effect>
+                <BlurEffect Radius="4" />
+            </Border.Effect>
+        </Border>
+
+        <fluent:ProgressRing />
+    </Panel>
+</UserControl>

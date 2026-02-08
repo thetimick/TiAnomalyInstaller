@@ -15,7 +15,6 @@ public class App : Application
         #if DEBUG
         this.AttachDeveloperTools();
         #endif
-        
         AppDomain.CurrentDomain.UnhandledException += (_, args) => {
             var logger = Program.GetRequiredService<ILogger<App>>();
             if (args.ExceptionObject is Exception exception && logger.IsEnabled(LogLevel.Critical))

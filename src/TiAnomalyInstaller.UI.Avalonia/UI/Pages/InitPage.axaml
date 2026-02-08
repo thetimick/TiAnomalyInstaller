@@ -1,0 +1,60 @@
+﻿<UserControl
+    x:Class="TiAnomalyInstaller.UI.Avalonia.UI.Pages.InitPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:icons="clr-namespace:FluentIcons.Avalonia;assembly=FluentIcons.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages"
+    d:DesignHeight="800"
+    d:DesignWidth="650"
+    x:DataType="vm:InitPageViewModel"
+    mc:Ignorable="d">
+
+    <Panel Margin="32">
+        <Border
+            Background="Black"
+            CornerRadius="16"
+            Opacity="0.8">
+
+            <Border.Effect>
+                <BlurEffect Radius="4" />
+            </Border.Effect>
+        </Border>
+
+        <StackPanel
+            Margin="32"
+            VerticalAlignment="Center"
+            Spacing="8">
+
+            <TextBox Text="{Binding Url, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Watermark="Ссылка на конфиг">
+                <TextBox.InnerLeftContent>
+                    <icons:SymbolIcon
+                        Margin="10,0,0,0"
+                        FontSize="14"
+                        Symbol="Link" />
+                </TextBox.InnerLeftContent>
+            </TextBox>
+
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                Spacing="8">
+
+                <Button Command="{Binding TapOnNextButtonCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <icons:SymbolIcon FontSize="14" Symbol="Save" />
+                        <TextBlock Text="Сохранить" />
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding TapOnExitButtonCommand}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <icons:SymbolIcon FontSize="14" Symbol="ArrowExit" />
+                        <TextBlock Text="Выход" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+    </Panel>
+</UserControl>

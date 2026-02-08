@@ -8,6 +8,9 @@
 using System;
 using System.Threading.Tasks;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+
 namespace TiAnomalyInstaller.UI.Avalonia.Components;
 
 public interface IDefer : IDisposable, IAsyncDisposable;

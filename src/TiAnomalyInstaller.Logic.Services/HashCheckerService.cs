@@ -6,10 +6,7 @@
 // ⠀
 
 using System.Security.Cryptography;
-using Downloader;
 using Microsoft.Extensions.Logging;
-using TiAnomalyInstaller.AppConstants;
-using TiAnomalyInstaller.Logic.Services.Entities;
 
 namespace TiAnomalyInstaller.Logic.Services;
 

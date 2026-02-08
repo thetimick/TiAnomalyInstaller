@@ -1,5 +1,5 @@
 ﻿// ⠀
-// MainWindowViewModel.cs
+// MainPageViewModel.cs
 // TiAnomalyInstaller.UI.Avalonia
 // 
 // Created by the_timick on 02.01.2026.
@@ -8,13 +8,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -29,20 +28,21 @@ using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
 using TiAnomalyInstaller.Logic.Services.Services;
 using TiAnomalyInstaller.UI.Avalonia.Extensions;
-using TiAnomalyInstaller.UI.Avalonia.Resources;
+using TiAnomalyInstaller.UI.Avalonia.Services;
 
-namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+namespace TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages.MainPage;
 
-public partial class MainWindowViewModel(
+public partial class MainPageViewModel(
+    IDialogService dialogService,
     IStorageService storageService,
     IConfigService configService,
-    IInMemoryStorageService inMemoryStorageService,
     IPlayingService playingService,
     IWatcherService watcherService,
     ICleanupService cleanupService,
+    ILinkService linkService,
     IPlayOrchestrator playOrchestrator,
     IInstallOrchestrator installOrchestrator,
-    ILogger<MainWindowViewModel> logger
+    ILogger<MainPageViewModel> logger
 ): ObservableObject {
     // ────────────────────────────────────────────────
     // Props
@@ -54,12 +54,7 @@ public partial class MainWindowViewModel(
     [NotifyCanExecuteChangedFor(nameof(TapOnPlayButtonCommand))]
     [NotifyCanExecuteChangedFor(nameof(TapOnInstallButtonCommand))]
     [NotifyCanExecuteChangedFor(nameof(TapOnCloseButtonCommand))]
-    public partial MainWindowViewModelType ViewModelType { get; set; } = MainWindowViewModelType.None;
-    
-    [ObservableProperty]
-    public partial Bitmap BackgroundImageFileName { get; set; } = new(
-        AssetLoader.Open(new Uri(InternalConstants.BackgroundImagePath))
-    );
+    public partial MainPageViewModelType ViewModelType { get; set; } = MainPageViewModelType.None;
     
     [ObservableProperty]
     public partial string Title { get; set; } = string.Empty;
@@ -79,15 +74,15 @@ public partial class MainWindowViewModel(
     /// <summary>
     /// Игра установлена и готова к запуску
     /// </summary>
-    private bool IsPlayingAvailable => ViewModelType == MainWindowViewModelType.PlayAvailable;
+    private bool IsPlayingAvailable => ViewModelType == MainPageViewModelType.PlayAvailable;
     
     /// <summary>
     /// Доступна новая версия
     /// </summary>
-    private bool IsNewVersionAvailable => ViewModelType == MainWindowViewModelType.UpdateAvailable;
+    private bool IsNewVersionAvailable => ViewModelType == MainPageViewModelType.UpdateAvailable;
 
     private bool IsInstallButtonEnabled => !IsPlayingAvailable || IsNewVersionAvailable;
-    private bool IsCancelButtonEnabled => ViewModelType != MainWindowViewModelType.Cancelling;
+    private bool IsCancelButtonEnabled => ViewModelType != MainPageViewModelType.Cancelling;
     
     private IClassicDesktopStyleApplicationLifetime? _lifetime;
     private RemoteConfigEntity _config = null!;
@@ -103,23 +98,16 @@ public partial class MainWindowViewModel(
         try
         {
             _lifetime = Program.GetLifetime();
-            
-            // Глобальная ошибка при инициализации
-            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.GlobalError) is { } ex)
-                throw ex;
-            
             _config = configService.Cached ?? throw new ArgumentNullException();
             
             SetupWatcherService();
             UpdateViewModelType();
-
-            if (_config.Visual.BackgroundImage is not null)
-                BackgroundImageFileName = new Bitmap(Constants.Files.BackgroundFileName);
+            
             Title = _config.Metadata.Title;
         }
         catch (Exception ex)
         {
-            Task.Factory.StartNew(() => ShowErrorWithExitAsync(ex));
+            Task.Factory.StartNew(() => dialogService.ShowErrorAsync(ex));
         }
     }
 
@@ -141,11 +129,11 @@ public partial class MainWindowViewModel(
         }
         catch (OperationCanceledException)
         {
-            await ShowInfoAsync(Strings.mw_alert_operation_cancelled);
+            await dialogService.ShowInfoAsync(Strings.mw_alert_operation_cancelled);
         }
         catch (Exception ex)
         {
-            await ShowErrorAsync(ex);
+            await dialogService.ShowErrorAsync(ex);
         }
         finally
         {
@@ -178,11 +166,11 @@ public partial class MainWindowViewModel(
         catch (OperationCanceledException)
         {
             LogInfo(Strings.mw_alert_operation_cancelled);
-            await ShowInfoAsync(Strings.mw_alert_operation_cancelled);
+            await dialogService.ShowInfoAsync(Strings.mw_alert_operation_cancelled);
         }
         catch (Exception ex)
         {
-            await ShowErrorAsync(ex);
+            await dialogService.ShowErrorAsync(ex);
         }
         finally
         {
@@ -225,7 +213,25 @@ public partial class MainWindowViewModel(
 
     [RelayCommand]
     private void TapOnCreateShortcutMenuButton(ShortcutType type)
-    { }
+    {
+        if (Environment.ProcessPath is not  { } file)
+            return;
+        
+        switch (type)
+        {
+            case ShortcutType.Desktop:
+                var lnk = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    $"S.T.A.L.K.E.R. Anomaly {_config.Metadata.Title}.lnk"
+                );
+                if (File.Exists(lnk))
+                    File.Delete(lnk);
+                linkService.Make(file, lnk);
+            break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
     
     [RelayCommand]
     private void TapOnOpenFolderMenuButton(OpenType open)
@@ -252,7 +258,7 @@ public partial class MainWindowViewModel(
     [RelayCommand]
     private async Task TapOnDeleteMenuButton(DeleteType type)
     {
-        if (await ShowQuestionAsync(Strings.mw_alert_question_delete) != ButtonResult.Yes)
+        if (await dialogService.ShowQuestionAsync(Strings.mw_alert_question_delete) != ButtonResult.Yes)
             return;
         
         switch (type)
@@ -277,14 +283,14 @@ public partial class MainWindowViewModel(
     {
         if (_tokenSource is not null)
         {
-            UpdateViewModelType(MainWindowViewModelType.Cancelling);
+            UpdateViewModelType(MainPageViewModelType.Cancelling);
             
             await _tokenSource.CancelAsync();
             _tokenSource = null;
             return;
         }
         
-        if (ViewModelType is not (MainWindowViewModelType.InProgress or MainWindowViewModelType.Cancelling))
+        if (ViewModelType is not (MainPageViewModelType.InProgress or MainPageViewModelType.Cancelling))
             _lifetime?.TryShutdown();
     }
 }
@@ -293,7 +299,7 @@ public partial class MainWindowViewModel(
 // Private Methods
 // ────────────────────────────────────────────────
 
-public partial class MainWindowViewModel
+public partial class MainPageViewModel
 {
     private void SetupWatcherService()
     {
@@ -305,7 +311,7 @@ public partial class MainWindowViewModel
         );
     }
     
-    private void UpdateViewModelType(MainWindowViewModelType? type = null)
+    private void UpdateViewModelType(MainPageViewModelType? type = null)
     {
         var oldValue = ViewModelType;
         
@@ -317,7 +323,7 @@ public partial class MainWindowViewModel
             }
             else if (_tokenSource != null)
             {
-                ViewModelType = MainWindowViewModelType.InProgress;
+                ViewModelType = MainPageViewModelType.InProgress;
             }
             else
             {
@@ -327,9 +333,9 @@ public partial class MainWindowViewModel
 
                 ViewModelType = folderExists && playingAvailable
                     ? versionIsCurrent 
-                        ? MainWindowViewModelType.PlayAvailable 
-                        : MainWindowViewModelType.UpdateAvailable
-                    : MainWindowViewModelType.InstallAvailable;
+                        ? MainPageViewModelType.PlayAvailable 
+                        : MainPageViewModelType.UpdateAvailable
+                    : MainPageViewModelType.InstallAvailable;
             }
         }
         finally
@@ -344,16 +350,16 @@ public partial class MainWindowViewModel
         InstallButtonTitle = IsPlayingAvailable || IsNewVersionAvailable 
             ? Strings.mw_button_update 
             : Strings.mw_button_install;
-        CancelButtonTitle = ViewModelType is MainWindowViewModelType.InProgress or MainWindowViewModelType.Cancelling
+        CancelButtonTitle = ViewModelType is MainPageViewModelType.InProgress or MainPageViewModelType.Cancelling
             ? Strings.mw_button_cancel
             : Strings.mw_button_exit;
         
-        if (ViewModelType == MainWindowViewModelType.Cancelling)
+        if (ViewModelType == MainPageViewModelType.Cancelling)
             ProgressBarList.Clear();
 
-        if (ViewModelType == MainWindowViewModelType.Cancelling)
+        if (ViewModelType == MainPageViewModelType.Cancelling)
             MainProgressBarTitle = Strings.mw_progress_title_cancelling;
-        else if (ViewModelType == MainWindowViewModelType.InProgress)
+        else if (ViewModelType == MainPageViewModelType.InProgress)
             MainProgressBarTitle = null;
         else if (IsNewVersionAvailable)
             MainProgressBarTitle = string.Format(Strings.mw_progress_title_update_available, storageService.GetString(StorageServiceKey.Version), _config.Metadata.LatestVersion);

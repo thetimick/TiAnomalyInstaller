@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Tests/">
     <Project Path="TiAnomalyInstaller.Logic.Services.Tests/TiAnomalyInstaller.Logic.Services.Tests.csproj" />
+    <Project Path="TiAnomalyInstaller.UI.Avalonia.Tests/TiAnomalyInstaller.UI.Avalonia.Tests.csproj" />
   </Folder>
   <Project Path="TiAnomalyInstaller.AppConstants/TiAnomalyInstaller.AppConstants.csproj" />
   <Project Path="TiAnomalyInstaller.Logic.Orchestrators/TiAnomalyInstaller.Logic.Orchestrators.csproj" />
