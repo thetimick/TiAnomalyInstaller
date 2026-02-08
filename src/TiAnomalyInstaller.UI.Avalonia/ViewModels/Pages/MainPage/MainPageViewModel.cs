@@ -28,13 +28,14 @@ using TiAnomalyInstaller.Logic.Services;
 using TiAnomalyInstaller.Logic.Services.Entities;
 using TiAnomalyInstaller.Logic.Services.Services;
 using TiAnomalyInstaller.UI.Avalonia.Extensions;
+using TiAnomalyInstaller.UI.Avalonia.Services;
 
 namespace TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages.MainPage;
 
 public partial class MainPageViewModel(
+    IDialogService dialogService,
     IStorageService storageService,
     IConfigService configService,
-    IInMemoryStorageService inMemoryStorageService,
     IPlayingService playingService,
     IWatcherService watcherService,
     ICleanupService cleanupService,
@@ -97,11 +98,6 @@ public partial class MainPageViewModel(
         try
         {
             _lifetime = Program.GetLifetime();
-            
-            // Глобальная ошибка при инициализации
-            if (inMemoryStorageService.GetValue<Exception>(InMemoryStorageKey.GlobalError) is { } ex)
-                throw ex;
-            
             _config = configService.Cached ?? throw new ArgumentNullException();
             
             SetupWatcherService();
@@ -111,7 +107,7 @@ public partial class MainPageViewModel(
         }
         catch (Exception ex)
         {
-            Task.Factory.StartNew(() => ShowErrorWithExitAsync(ex));
+            Task.Factory.StartNew(() => dialogService.ShowErrorAsync(ex));
         }
     }
 
@@ -133,11 +129,11 @@ public partial class MainPageViewModel(
         }
         catch (OperationCanceledException)
         {
-            await ShowInfoAsync(Strings.mw_alert_operation_cancelled);
+            await dialogService.ShowInfoAsync(Strings.mw_alert_operation_cancelled);
         }
         catch (Exception ex)
         {
-            await ShowErrorAsync(ex);
+            await dialogService.ShowErrorAsync(ex);
         }
         finally
         {
@@ -170,11 +166,11 @@ public partial class MainPageViewModel(
         catch (OperationCanceledException)
         {
             LogInfo(Strings.mw_alert_operation_cancelled);
-            await ShowInfoAsync(Strings.mw_alert_operation_cancelled);
+            await dialogService.ShowInfoAsync(Strings.mw_alert_operation_cancelled);
         }
         catch (Exception ex)
         {
-            await ShowErrorAsync(ex);
+            await dialogService.ShowErrorAsync(ex);
         }
         finally
         {
@@ -262,7 +258,7 @@ public partial class MainPageViewModel(
     [RelayCommand]
     private async Task TapOnDeleteMenuButton(DeleteType type)
     {
-        if (await ShowQuestionAsync(Strings.mw_alert_question_delete) != ButtonResult.Yes)
+        if (await dialogService.ShowQuestionAsync(Strings.mw_alert_question_delete) != ButtonResult.Yes)
             return;
         
         switch (type)

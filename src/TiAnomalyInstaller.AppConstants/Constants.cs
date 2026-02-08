@@ -30,6 +30,8 @@ public static class Constants
         public const string YandexDiskResourcesApi = "https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=<key>";
         public const string GoogleDriveDomain = "drive.google.com";
         public const string GoogleDriveTemplateUrl = "https://drive.usercontent.google.com/download?export=download&id=<file_id>&confirm=t";
+
+        public const string LogFileOutputTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}";
     }
     
     public const string Vanilla = "Vanilla";

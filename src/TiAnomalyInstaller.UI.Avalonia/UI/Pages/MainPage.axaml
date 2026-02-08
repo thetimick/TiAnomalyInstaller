@@ -134,8 +134,8 @@
 
     <!-- Ui -->
 
-    <Grid RowDefinitions="*, Auto">
-        <Panel Grid.Row="0" Margin="32">
+    <Grid RowDefinitions="*, Auto" RowSpacing="16">
+        <Panel Grid.Row="0" Margin="32,32,32,0">
             <Border
                 Background="Black"
                 CornerRadius="16"

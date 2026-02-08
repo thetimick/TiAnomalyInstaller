@@ -42,11 +42,6 @@ public partial class MainWindowViewModel(
             await navigationService.RouteTo(Enums.PageType.Init);
             return;
         }
-
-        if (!await internetAvailabilityService.HasInternetAsync())
-        {
-            throw new InternetUnavailableException();
-        }
         
         try
         {
@@ -54,12 +49,16 @@ public partial class MainWindowViewModel(
             
             var config = await configService.ObtainRemoteConfigAsync(url, true);
             await PreloadCustomBackgroundImageIfNeededAsync(config);
-            
+
+            await Task.Delay(500);
             await navigationService.RouteTo(Enums.PageType.Main);
         }
-        catch
+        catch(Exception ex)
         {
             await navigationService.RouteTo(Enums.PageType.Init);
+            
+            if (logger.IsEnabled(LogLevel.Error))
+                logger.LogError("{ex}", ex);
         }
     }
 }

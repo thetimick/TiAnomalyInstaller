@@ -19,17 +19,18 @@ public partial class MainWindow : Window
     
     private static MainWindowViewModel ViewModel => Program
         .GetRequiredService<MainWindowViewModel>();
-    private static INavigationService NavigationService => Program
-        .GetRequiredService<INavigationService>();
 
     // ─────────────── Lifecycle ───────────────
     
     public MainWindow()
     {
         InitializeComponent();
-        
         DataContext = ViewModel;
-        NavigationService.Setup(MainFrame);
+        
+        Program.GetRequiredService<INavigationService>()
+            .Setup(MainFrame);
+        Program.GetRequiredService<IDialogService>()
+            .Setup(this);
         
         Loaded += (_, _) => Task.Run(async () => await ViewModel.LoadContentAsync());
     }

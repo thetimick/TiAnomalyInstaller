@@ -36,10 +36,7 @@ public static partial class Program
             .Enrich
             .FromLogContext()
             .WriteTo
-            .File(
-                Constants.Files.LogFileName,
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}"
-            )
+            .File(Constants.Files.LogFileName, outputTemplate: Constants.Utils.LogFileOutputTemplate)
             .CreateLogger();
         
         collection.AddLogging(builder => {
@@ -78,6 +75,7 @@ public static partial class Program
         // UI
         collection.AddSingleton<INavigationPageFactory, NavigationPageFactory>();
         collection.AddSingleton<INavigationService, NavigationService>();
+        collection.AddSingleton<IDialogService, DialogService>();
         
         collection.AddSingleton<App>();
         

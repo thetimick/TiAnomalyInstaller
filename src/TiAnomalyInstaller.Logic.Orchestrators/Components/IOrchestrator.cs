@@ -7,7 +7,7 @@
 
 namespace TiAnomalyInstaller.Logic.Orchestrators.Components;
 
-public interface IOrchestrator<T>
+public interface IOrchestrator<out T>
 {
     public event EventHandler<T>? Handler;
     Task StartAsync(CancellationToken token = default);

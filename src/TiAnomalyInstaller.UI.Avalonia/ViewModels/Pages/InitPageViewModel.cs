@@ -18,6 +18,7 @@ namespace TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages;
 
 public partial class InitPageViewModel(
     INavigationService navigationService,
+    IDialogService dialogService,
     IStorageService storageService,
     IConfigService configService
 ): ObservableObject, ILoadable {
@@ -54,11 +55,12 @@ public partial class InitPageViewModel
         {
             await configService.ObtainRemoteConfigAsync(Url, true);
             storageService.Set(StorageServiceKey.ProfileUrl, Url);
-            navigationService.RouteTo(Enums.PageType.Main);
+            
+            await navigationService.RouteTo(Enums.PageType.Main);
         }
         catch
         {
-            // empty
+            await dialogService.ShowErrorAsync("Произошла ошибка при получении конфига.\nСкорее всего, вы указали неверную ссылку.");
         }
     }
     
