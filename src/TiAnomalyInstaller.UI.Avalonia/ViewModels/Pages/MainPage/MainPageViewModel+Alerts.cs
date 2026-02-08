@@ -1,5 +1,5 @@
 ﻿// ⠀
-// MainWindowViewModel+Alerts.cs
+// MainPageViewModel+Alerts.cs
 // TiAnomalyInstaller.UI.Avalonia
 // 
 // Created by the_timick on 08.01.2026.
@@ -13,9 +13,9 @@ using MsBox.Avalonia.Enums;
 using TiAnomalyInstaller.AppConstants.Localization;
 using TiAnomalyInstaller.Logic.Services;
 
-namespace TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+namespace TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages.MainPage;
 
-public partial class MainWindowViewModel
+public partial class MainPageViewModel
 {
     public async Task<ButtonResult> ShowQuestionOnMainAsync(string message)
     {

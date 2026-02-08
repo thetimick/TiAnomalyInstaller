@@ -8,7 +8,7 @@
 using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
-using TiAnomalyInstaller.UI.Avalonia.UI.Windows.Main;
+using TiAnomalyInstaller.UI.Avalonia.ViewModels.Pages.MainPage;
 
 namespace TiAnomalyInstaller.UI.Avalonia.Converters;
 
@@ -22,13 +22,13 @@ public class ViewStateTypeToBoolConverter: IValueConverter
     
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not MainWindowViewModel.MainWindowViewModelType type)
+        if (value is not MainPageViewModel.MainPageViewModelType type)
             return value;
         var converterType = ConverterType.Normal;
         if (parameter is ConverterType cType)
             converterType = cType;
         return type switch {
-            MainWindowViewModel.MainWindowViewModelType.None
+            MainPageViewModel.MainPageViewModelType.None
                 => converterType != ConverterType.Normal,
             _ => converterType == ConverterType.Normal
         };

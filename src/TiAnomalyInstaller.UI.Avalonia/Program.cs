@@ -44,6 +44,16 @@ public static partial class Program
     // Helpers
     // ────────────────────────────────────────────────
     
+    public static T GetRequiredService<T>() where T : notnull
+    {
+        return _host.Services.GetRequiredService<T>();
+    }
+
+    public static IClassicDesktopStyleApplicationLifetime? GetLifetime()
+    {
+        return GetRequiredService<App>().ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
+    }
+    
     // ReSharper disable once UnusedMember.Global
     public static AppBuilder BuildAvaloniaApp()
         => BuildAvaloniaApp([]);
@@ -59,15 +69,5 @@ public static partial class Program
             .Configure(() => _host.Services.GetRequiredService<App>())
             .UsePlatformDetect()
             .LogToTrace();
-    }
-    
-    public static T GetRequiredService<T>() where T : notnull
-    {
-        return _host.Services.GetRequiredService<T>();
-    }
-
-    public static IClassicDesktopStyleApplicationLifetime? GetLifetime()
-    {
-        return GetRequiredService<App>().ApplicationLifetime as IClassicDesktopStyleApplicationLifetime;
     }
 }
